@@ -332,26 +332,49 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateCountdown, 1000);
 
   /* ==========================================================================
-     4. Envelope Opening Intro (Animated Wax Seal Click)
+     4. Interactive 3D Physical Wax Seal & Envelope Opening Ceremony
      ========================================================================== */
   const openInviteBtn = document.getElementById('openInviteBtn');
   const envelopeOverlay = document.getElementById('envelopeOverlay');
+  const envelopeBox = document.getElementById('envelopeBox');
+  const envelopePrompt = document.getElementById('envelopePrompt');
 
   if (openInviteBtn && envelopeOverlay) {
-    openInviteBtn.addEventListener('click', () => {
-      // Trigger unsealing pop animation
-      openInviteBtn.classList.add('unsealing');
+    let hasUnsealed = false;
 
-      // Smoothly unveil after quick tactile stamp reaction
+    openInviteBtn.addEventListener('click', () => {
+      if (hasUnsealed) return;
+      hasUnsealed = true;
+
+      // Stage 1: Tactile wax seal crack & immediate music playback
+      openInviteBtn.classList.add('unsealing');
+      if (envelopePrompt) {
+        envelopePrompt.style.opacity = '0';
+        envelopePrompt.style.pointerEvents = 'none';
+      }
+      playWeddingMusic();
+
+      // Stage 2 (t = 280ms): Top flap swings open in 3D (180deg)
+      setTimeout(() => {
+        if (envelopeBox) {
+          envelopeBox.classList.add('flap-opened');
+        }
+      }, 280);
+
+      // Stage 3 (t = 800ms): Royal invitation letter slides out of the pocket
+      setTimeout(() => {
+        if (envelopeBox) {
+          envelopeBox.classList.add('letter-extracted');
+        }
+      }, 800);
+
+      // Stage 4 (t = 1900ms): Smooth dissolve into the opened stationery page
       setTimeout(() => {
         envelopeOverlay.classList.add('opened');
         document.body.classList.remove('envelope-active');
         document.body.style.overflow = 'auto';
 
-        // Start romantic ambient wedding music upon unsealing
-        playWeddingMusic();
-
-        // Reveal mobile action bar only after envelope is opened
+        // Reveal mobile bottom action bar only after envelope is opened
         const mobileNav = document.getElementById('mobileActionBar');
         if (mobileNav) mobileNav.style.display = 'flex';
 
@@ -370,8 +393,8 @@ document.addEventListener('DOMContentLoaded', () => {
               el.classList.add('active');
             }
           });
-        }, 300);
-      }, 400);
+        }, 200);
+      }, 1900);
     });
   }
 

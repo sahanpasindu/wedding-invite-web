@@ -249,68 +249,239 @@ body.envelope-active .mobile-action-bar {
   z-index: 0;
 }
 
-.envelope-card {
+/* ==========================================================================
+   Interactive 3D Physical Wedding Envelope Stage
+   ========================================================================== */
+.envelope-scene {
   width: 100%;
   max-width: min(440px, calc(100vw - 32px));
   margin: 0 auto;
-  box-sizing: border-box;
-  background: #FFFFFF;
-  border-radius: var(--radius-md);
-  padding: clamp(28px, 6vw, 42px) clamp(16px, 4vw, 26px);
-  text-align: center;
+  perspective: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  box-shadow: 0 30px 70px -15px rgba(20, 19, 17, 0.25), 0 0 30px rgba(186, 149, 90, 0.2);
-  border: 1px solid var(--gold-border-bright);
-  background-image: var(--gradient-gold-subtle);
+  z-index: 10;
+}
+
+.envelope-box {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
   animation: floatSubtle 4.5s ease-in-out infinite;
 }
 
-.envelope-card::before {
-  content: "";
+/* 1. Envelope Back Paper & Gold Silk Damask Liner */
+.envelope-back {
   position: absolute;
-  top: 10px; left: 10px; right: 10px; bottom: 10px;
-  border: 1px solid rgba(20, 19, 17, 0.12);
-  border-radius: calc(var(--radius-md) - 4px);
+  inset: 0;
+  background: linear-gradient(135deg, #FAF7F0 0%, #E8DEC9 100%);
+  border-radius: 12px;
+  box-shadow: 0 25px 60px -15px rgba(20, 19, 17, 0.35), 0 0 25px rgba(186, 149, 90, 0.2);
+  border: 1px solid var(--gold-border-bright);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.envelope-liner {
+  position: absolute;
+  inset: 6px;
+  background: linear-gradient(135deg, #FBF8F2 0%, #E4D6BE 100%);
+  background-image: radial-gradient(rgba(186, 149, 90, 0.35) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+  border-radius: 8px;
+}
+
+/* 2. The Royal Invitation Letter (Nesting inside envelope pocket) */
+.envelope-letter {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 8px;
+  height: 90%;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid var(--gold-border-bright);
+  box-shadow: 0 4px 18px rgba(20, 19, 17, 0.12);
+  background-image: var(--gradient-gold-subtle);
+  z-index: 2;
+  padding: 16px 14px;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 1.1s ease, z-index 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.letter-content {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.envelope-letter-crest {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.letter-monogram {
+  font-family: var(--font-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold-deep);
+  border-top: 1px solid var(--gold-border);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 2px 14px;
+}
+
+/* When unsealed: Letter slides dramatically upwards out of the pocket */
+.envelope-box.letter-extracted .envelope-letter {
+  transform: translateY(-135px) scale(1.04);
+  z-index: 10;
+  box-shadow: 0 35px 80px -15px rgba(20, 19, 17, 0.45), 0 0 35px rgba(186, 149, 90, 0.35);
+}
+
+/* 3. Envelope Front Pocket (Lower triangle & side folds) */
+.envelope-pocket {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
+  z-index: 3;
+}
+
+.pocket-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(0deg, #FAF7F0 0%, #EFE8DA 100%);
+  clip-path: polygon(0 100%, 50% 20%, 100% 100%);
+  filter: drop-shadow(0 -3px 8px rgba(20, 19, 17, 0.08));
+  border-bottom: 2px solid rgba(186, 149, 90, 0.4);
+  border-radius: 0 0 12px 12px;
+}
+
+.pocket-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(135deg, #F5EFE3 0%, #E6DEC9 100%);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  border-radius: 12px 0 0 12px;
+  filter: drop-shadow(2px 0 6px rgba(20, 19, 17, 0.06));
+}
+
+.pocket-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(225deg, #EFE8DA 0%, #DFD5BE 100%);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-radius: 0 12px 12px 0;
+  filter: drop-shadow(-2px 0 6px rgba(20, 19, 17, 0.06));
+}
+
+/* 4. Top Triangular Flap (3D Flip Animation) */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 62%;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  z-index: 5;
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.38s;
+}
+
+.flap-front {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: linear-gradient(180deg, #FAF8F2 0%, #EDE3D0 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(0 6px 14px rgba(20, 19, 17, 0.2));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.flap-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+  background: linear-gradient(135deg, #FAF6EE 0%, #DFD0B8 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(0 -4px 10px rgba(20, 19, 17, 0.15));
+}
+
+.flap-back-liner {
+  position: absolute;
+  inset: 6px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: radial-gradient(rgba(186, 149, 90, 0.35) 1.2px, transparent 1.2px);
+  background-size: 14px 14px;
+}
+
+/* Open Flap State */
+.envelope-box.flap-opened .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
 }
 
 .envelope-sub {
   font-family: var(--font-script);
-  font-size: clamp(1.9rem, 6vw, 2.3rem);
+  font-size: clamp(1.6rem, 5.5vw, 2.1rem);
   color: var(--gold-dull);
-  margin-top: 4px;
-  margin-bottom: 6px;
-  line-height: 1.2;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  line-height: 1.15;
 }
 
 .envelope-names {
   font-family: var(--font-serif);
-  font-size: clamp(1.55rem, 5vw, 2rem);
+  font-size: clamp(1.3rem, 4.5vw, 1.75rem);
   font-weight: 600;
-  letter-spacing: clamp(1.5px, 2vw, 3px);
+  letter-spacing: clamp(1.5px, 2vw, 2.5px);
   color: var(--noir-black);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   text-transform: uppercase;
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
 .envelope-date {
-  font-size: 0.82rem;
-  letter-spacing: 2.5px;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .envelope-recipient-wrap {
-  margin: 10px auto 20px;
-  padding: 12px clamp(12px, 3vw, 20px);
+  margin: 6px auto 10px;
+  padding: 8px clamp(10px, 2.5vw, 16px);
   background: rgba(250, 246, 238, 0.96);
   border: 1px dashed var(--gold-border-bright);
   border-radius: var(--radius-sm);
   width: 100%;
-  max-width: min(330px, 100%);
+  max-width: min(320px, 100%);
   box-sizing: border-box;
   animation: envelopeGuestPulse 4s ease-in-out infinite;
   transition: transform 0.3s ease;
@@ -318,17 +489,17 @@ body.envelope-active .mobile-action-bar {
 
 .envelope-recipient-sub {
   display: block;
-  font-size: 0.65rem;
-  letter-spacing: 2px;
+  font-size: 0.62rem;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   color: var(--gold-dull);
   font-weight: 600;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .envelope-recipient-name {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.18rem;
   font-weight: 700;
   letter-spacing: 1px;
   background: linear-gradient(135deg, #141311 0%, #8C6D38 30%, #E2C582 50%, #8C6D38 70%, #141311 100%);
@@ -337,15 +508,15 @@ body.envelope-active .mobile-action-bar {
   -webkit-text-fill-color: transparent;
   animation: guestNameShimmer 5s ease-in-out infinite;
   filter: drop-shadow(0 1px 3px rgba(186, 149, 90, 0.25));
-  margin: 3px 0;
+  margin: 2px 0;
 }
 
 .envelope-recipient-scope {
   display: block;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   color: var(--gold-deep);
   font-weight: 500;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 @keyframes envelopeGuestPulse {
@@ -359,15 +530,23 @@ body.envelope-active .mobile-action-bar {
   }
 }
 
-/* Wax Seal Button (Black & Antique Dull Gold Luxury Seal) */
+/* Wax Seal Button (Positioned at Flap Apex) */
+.flap-front .wax-seal-btn {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
 .wax-seal-btn {
   position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90px;
-  height: 90px;
+  width: 84px;
+  height: 84px;
   background: radial-gradient(circle at 35% 35%, #BA955A, #7D5F2F 65%, #1A1816 100%);
   border-radius: 50%;
   border: 2px solid #E8D3AB;
@@ -525,6 +704,128 @@ body.envelope-active .mobile-action-bar {
   text-align: center;
   padding: 40px 16px 36px;
   position: relative;
+}
+
+/* ==========================================================================
+   Open Envelope Presentation for the Main Invitation Page
+   ========================================================================== */
+.open-envelope-display {
+  position: relative;
+  width: 100%;
+  max-width: min(680px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 1. Open Envelope Flap & Silk Damask Liner Behind Card */
+.open-envelope-flap-bg {
+  position: absolute;
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(580px, 94%);
+  height: 115px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.open-flap-triangle {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #E6DEC9 0%, #FAF6EE 100%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  filter: drop-shadow(0 -6px 16px rgba(20, 19, 17, 0.12));
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.open-flap-liner {
+  position: absolute;
+  inset: 6px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: radial-gradient(rgba(186, 149, 90, 0.35) 1.2px, transparent 1.2px);
+  background-size: 14px 14px;
+}
+
+.open-flap-crest {
+  position: absolute;
+  top: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-gold);
+  border: 1.5px solid #FFFDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(20, 19, 17, 0.25);
+  z-index: 2;
+}
+
+.crest-monogram {
+  font-family: var(--font-serif);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #141311;
+  letter-spacing: 0.5px;
+}
+
+/* 2. Open Envelope Pocket Base Cradling Bottom of Hero Card */
+.open-envelope-pocket-base {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(620px, 98%);
+  height: 52px;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.pocket-base-fold.left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 48%;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(235, 226, 210, 0.95), rgba(248, 244, 235, 0.95));
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  border-bottom: 2px solid var(--gold-border);
+  border-radius: 0 0 0 20px;
+}
+
+.pocket-base-fold.right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 48%;
+  height: 44px;
+  background: linear-gradient(225deg, rgba(230, 218, 198, 0.95), rgba(245, 240, 228, 0.95));
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-bottom: 2px solid var(--gold-border);
+  border-radius: 0 0 20px 0;
+}
+
+.pocket-base-seal {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gradient-gold);
+  border: 1px solid #FFFDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #141311;
+  font-size: 0.72rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+  z-index: 3;
+  margin-bottom: 4px;
 }
 
 .hero-card {
@@ -2581,6 +2882,52 @@ body.envelope-active .mobile-action-bar {
   .v-state {
     font-size: 0.46rem;
     padding: 3px 2px;
+  }
+  .envelope-scene {
+    max-width: calc(100vw - 28px);
+  }
+  .envelope-box {
+    height: 250px;
+  }
+  .envelope-names {
+    font-size: 1.25rem;
+  }
+  .envelope-sub {
+    font-size: 1.6rem;
+  }
+  .envelope-recipient-wrap {
+    padding: 6px 10px;
+    margin: 4px auto 8px;
+  }
+  .envelope-recipient-name {
+    font-size: 1.05rem;
+  }
+  .envelope-box.letter-extracted .envelope-letter {
+    transform: translateY(-105px) scale(1.02);
+  }
+  .open-envelope-flap-bg {
+    top: -42px;
+    height: 90px;
+  }
+  .open-flap-crest {
+    width: 30px;
+    height: 30px;
+  }
+  .crest-monogram {
+    font-size: 0.54rem;
+  }
+  .open-envelope-pocket-base {
+    bottom: -14px;
+    height: 42px;
+  }
+  .pocket-base-fold.left,
+  .pocket-base-fold.right {
+    height: 36px;
+  }
+  .pocket-base-seal {
+    width: 26px;
+    height: 26px;
+    font-size: 0.65rem;
   }
 }
 
