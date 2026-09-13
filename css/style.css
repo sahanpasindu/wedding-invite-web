@@ -1105,24 +1105,29 @@ button, input, select, textarea {
 .venue-badge-view {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #FAF4E8;
-  background: rgba(186, 149, 90, 0.85);
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--gold-light);
+  background: rgba(20, 19, 17, 0.75);
   backdrop-filter: blur(8px);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(20, 19, 17, 0.3);
-  transition: background-color 0.25s, transform 0.25s;
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.25s, transform 0.25s, color 0.25s, border-color 0.25s;
+}
+
+.venue-badge-view svg {
+  width: 15px;
+  height: 15px;
 }
 
 .venue-hero-frame:hover .venue-badge-view {
-  background: #D4B680;
-  color: var(--noir-black);
-  transform: translateY(-2px);
+  background: var(--noir-black);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  transform: scale(1.12);
 }
 
 /* Opulent Details Card */
