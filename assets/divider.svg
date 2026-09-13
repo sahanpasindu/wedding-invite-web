@@ -1,0 +1,25 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 50" width="100%" height="100%">
+  <defs>
+    <linearGradient id="divGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cfb078" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#c5a059" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#dfc493" stop-opacity="1"/>
+      <stop offset="80%" stop-color="#b89355" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#cfb078" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Thin Center Lines -->
+  <line x1="20" y1="25" x2="210" y2="25" stroke="url(#divGold)" stroke-width="1"/>
+  <line x1="290" y1="25" x2="480" y2="25" stroke="url(#divGold)" stroke-width="1"/>
+
+  <!-- Center Diamond & Ornaments -->
+  <path d="M250,15 L260,25 L250,35 L240,25 Z" fill="url(#divGold)"/>
+  <circle cx="230" cy="25" r="3" fill="#b69153"/>
+  <circle cx="270" cy="25" r="3" fill="#b69153"/>
+  <circle cx="218" cy="25" r="1.8" fill="#dfc493"/>
+  <circle cx="282" cy="25" r="1.8" fill="#dfc493"/>
+
+  <!-- Subtle curves -->
+  <path d="M228,21 C235,16 244,16 250,18 C256,16 265,16 272,21" fill="none" stroke="url(#divGold)" stroke-width="0.8"/>
+  <path d="M228,29 C235,34 244,34 250,32 C256,34 265,34 272,29" fill="none" stroke="url(#divGold)" stroke-width="0.8"/>
+</svg>

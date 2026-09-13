@@ -1,0 +1,2587 @@
+/* ==========================================================================
+   Anu & Nirmal Wedding Invitation
+   Color Theme: Pure White, Antique Dull Gold, Rich Noir Black, Champagne Gold
+   Mobile-First Luxury Editorial Design with Smooth Animations
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('fonts.css');
+
+:root {
+  /* Color Palette: White, Dull Gold, Rich Noir Black */
+  --bg-body: #FAF8F5;
+  --bg-card: #FFFFFF;
+  --bg-card-subtle: #FAF6EE;
+  --bg-overlay: rgba(250, 248, 245, 0.94);
+
+  /* Noir Black Tones */
+  --noir-black: #141311;
+  --noir-soft: #23201D;
+  --noir-deep: #0A0A09;
+  --noir-card: #1A1816;
+
+  /* Dull Gold & Antique Gold */
+  --gold-dull: #9C7D4A;
+  --gold-primary: #BA955A;
+  --gold-deep: #7D5F2F;
+  --gold-light: #DFC89D;
+  --gold-champagne: #F2E8D3;
+  --gold-border: rgba(186, 149, 90, 0.38);
+  --gold-border-bright: #D1B37D;
+  --gold-border-black: rgba(20, 19, 17, 0.18);
+
+  /* Typography Text Colors */
+  --text-noir: #141311;
+  --text-dark: #2A2420;
+  --text-body: #4A423B;
+  --text-muted: #7A7067;
+  --text-gold: #9C7D4A;
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, #D4B680 0%, #BA955A 50%, #8E6A2E 100%);
+  --gradient-gold-hover: linear-gradient(135deg, #E2C793 0%, #C4A163 50%, #9F7939 100%);
+  --gradient-gold-subtle: linear-gradient(180deg, rgba(223, 200, 157, 0.15) 0%, rgba(186, 149, 90, 0.05) 100%);
+  --gradient-noir-btn: linear-gradient(135deg, #181715 0%, #282420 100%);
+  --gradient-noir-gold: linear-gradient(135deg, #141311 0%, #2A2420 50%, #8E6A2E 100%);
+  --gradient-shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+
+  /* Shadows */
+  --shadow-soft: 0 10px 30px -5px rgba(20, 19, 17, 0.08);
+  --shadow-elevated: 0 20px 50px -10px rgba(20, 19, 17, 0.14);
+  --shadow-gold-glow: 0 0 25px rgba(186, 149, 90, 0.25);
+
+  /* Typography */
+  --font-serif-display: 'Cinzel Decorative', 'Cinzel', 'Playfair Display', serif;
+  --font-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-script: 'Alex Brush', cursive;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --max-width: 820px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.68;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(223, 200, 157, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(20, 19, 17, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Sparkle Canvas Background */
+.sparkle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle background luxury pattern */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(186, 149, 90, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ==========================================================================
+   Scroll-Reveal Animations
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+
+/* Directional Entrance Animations (Responsive & Zero Overflow) */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-25px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(25px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-left.active,
+.reveal-right.active {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Mobile: strictly vertical translations to eliminate all horizontal scroll / offset */
+@media (max-width: 768px) {
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(28px);
+  }
+  .reveal-left.active,
+  .reveal-right.active {
+    transform: translateY(0);
+  }
+}
+
+.person-card.reveal-left,
+.person-card.reveal-right {
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.person-card.reveal-left.active:hover,
+.person-card.reveal-right.active:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ==========================================================================
+   Envelope Opening Intro Modal (First Impression on Mobile & Desktop)
+   ========================================================================== */
+body.envelope-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+body.envelope-active .mobile-action-bar {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.envelope-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: radial-gradient(circle at center, #FAF7F0 0%, #E8DFCE 100%);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  overscroll-behavior: none;
+  touch-action: none;
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1), visibility 1s;
+}
+
+.envelope-overlay.opened {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Subtle Falling Petals & Blossom Canvas for Envelope */
+.envelope-petal-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.envelope-card {
+  width: 100%;
+  max-width: min(440px, calc(100vw - 32px));
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  padding: clamp(28px, 6vw, 42px) clamp(16px, 4vw, 26px);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 30px 70px -15px rgba(20, 19, 17, 0.25), 0 0 30px rgba(186, 149, 90, 0.2);
+  border: 1px solid var(--gold-border-bright);
+  background-image: var(--gradient-gold-subtle);
+  animation: floatSubtle 4.5s ease-in-out infinite;
+}
+
+.envelope-card::before {
+  content: "";
+  position: absolute;
+  top: 10px; left: 10px; right: 10px; bottom: 10px;
+  border: 1px solid rgba(20, 19, 17, 0.12);
+  border-radius: calc(var(--radius-md) - 4px);
+  pointer-events: none;
+}
+
+.envelope-sub {
+  font-family: var(--font-script);
+  font-size: clamp(1.9rem, 6vw, 2.3rem);
+  color: var(--gold-dull);
+  margin-top: 4px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.envelope-names {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: clamp(1.5px, 2vw, 3px);
+  color: var(--noir-black);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.envelope-date {
+  font-size: 0.82rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.envelope-recipient-wrap {
+  margin: 10px auto 20px;
+  padding: 12px clamp(12px, 3vw, 20px);
+  background: rgba(250, 246, 238, 0.96);
+  border: 1px dashed var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: min(330px, 100%);
+  box-sizing: border-box;
+  animation: envelopeGuestPulse 4s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.envelope-recipient-sub {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-dull);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.envelope-recipient-name {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #141311 0%, #8C6D38 30%, #E2C582 50%, #8C6D38 70%, #141311 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: guestNameShimmer 5s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(186, 149, 90, 0.25));
+  margin: 3px 0;
+}
+
+.envelope-recipient-scope {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--gold-deep);
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+@keyframes envelopeGuestPulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(20, 19, 17, 0.06), 0 0 0 1px rgba(186, 149, 90, 0.3);
+    border-color: rgba(186, 149, 90, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 24px rgba(186, 149, 90, 0.22), 0 0 0 1.5px rgba(212, 175, 55, 0.7);
+    border-color: rgba(212, 175, 55, 0.85);
+  }
+}
+
+/* Wax Seal Button (Black & Antique Dull Gold Luxury Seal) */
+.wax-seal-btn {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle at 35% 35%, #BA955A, #7D5F2F 65%, #1A1816 100%);
+  border-radius: 50%;
+  border: 2px solid #E8D3AB;
+  cursor: pointer;
+  box-shadow: 0 12px 28px -3px rgba(20, 19, 17, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s;
+  outline: none;
+}
+
+.wax-seal-btn:hover, .wax-seal-btn:focus-visible {
+  transform: scale(1.08);
+  box-shadow: 0 16px 34px -2px rgba(20, 19, 17, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+}
+
+.wax-seal-btn:active {
+  transform: scale(0.95);
+}
+
+.wax-seal-btn.unsealing {
+  animation: unsealPop 0.6s ease forwards;
+}
+
+@keyframes unsealPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18) rotate(-10deg); filter: brightness(1.3); }
+  100% { transform: scale(0) rotate(20deg); opacity: 0; }
+}
+
+.wax-seal-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+}
+
+.wax-monogram {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #FFFDF8;
+  text-shadow: 1px 1px 3px rgba(10, 10, 10, 0.8);
+  letter-spacing: 1px;
+}
+
+.wax-text {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #F8EED9;
+  margin-top: 2px;
+  opacity: 0.95;
+}
+
+.envelope-prompt {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--noir-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.envelope-prompt svg {
+  animation: pulseTouch 1.8s infinite;
+  stroke: var(--gold-dull);
+}
+
+/* ==========================================================================
+   Main Wrapper
+   ========================================================================== */
+.site-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px 120px;
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+/* Sticky Bottom Action Bar on Mobile (Noir Glassmorphism) */
+.mobile-action-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: calc(100% - 32px);
+  max-width: 460px;
+  background: rgba(20, 19, 17, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(209, 179, 125, 0.45);
+  border-radius: 40px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 999;
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.35);
+}
+
+.action-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: #E8DFCE;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.action-bar-item svg {
+  width: 19px;
+  height: 19px;
+  margin-bottom: 2px;
+  stroke: var(--gold-light);
+  fill: none;
+}
+
+.action-bar-item.highlight {
+  background: var(--gradient-gold);
+  color: var(--noir-black);
+  padding: 6px 16px;
+  box-shadow: 0 4px 14px rgba(186, 149, 90, 0.45);
+  font-weight: 600;
+}
+
+.action-bar-item.highlight svg {
+  stroke: var(--noir-black);
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 16px 36px;
+  position: relative;
+}
+
+.hero-card {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-lg);
+  padding: 50px 24px 44px;
+  position: relative;
+  box-shadow: var(--shadow-elevated);
+  background-image: 
+    radial-gradient(ellipse at top, rgba(238, 220, 184, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(20, 19, 17, 0.04) 0%, transparent 60%);
+  overflow: hidden;
+}
+
+/* Dual inner border line for luxury finish */
+.hero-card::after {
+  content: "";
+  position: absolute;
+  top: 8px; left: 8px; right: 8px; bottom: 8px;
+  border: 1px solid rgba(20, 19, 17, 0.08);
+  border-radius: calc(var(--radius-lg) - 6px);
+  pointer-events: none;
+}
+
+/* Ornate Corner Accents */
+.card-corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.card-corner.top-left { top: 12px; left: 12px; }
+.card-corner.top-right { top: 12px; right: 12px; transform: scaleX(-1); }
+.card-corner.bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
+.card-corner.bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
+
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #FAF4E8;
+  background: var(--noir-black);
+  border: 1px solid var(--gold-border-bright);
+  padding: 8px 22px;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 14px rgba(20, 19, 17, 0.25), 0 0 10px rgba(186, 149, 90, 0.2);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: var(--gradient-shimmer);
+  transform: skewX(-25deg);
+  animation: badgeShimmer 4s infinite;
+}
+
+@keyframes badgeShimmer {
+  0%, 70% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.personal-invitation-box {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FAF6EE 100%);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  margin: 0 auto 24px;
+  max-width: 500px;
+  position: relative;
+  animation: guestBoxGlow 5s ease-in-out infinite;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.personal-invitation-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(186, 149, 90, 0.25), 0 0 0 1.5px rgba(212, 175, 55, 0.65);
+}
+
+.personal-invite-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--noir-black);
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  padding: 4px 14px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(186, 149, 90, 0.12);
+}
+
+.personal-guest-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.45rem, 4.5vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 8px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, #141311 0%, #7E5F2D 25%, #E2C582 50%, #7E5F2D 75%, #141311 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: guestNameShimmer 5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(186, 149, 90, 0.22));
+}
+
+.personal-guest-name::before,
+.personal-guest-name::after {
+  content: '✦';
+  font-size: 0.65em;
+  color: var(--gold-dull);
+  -webkit-text-fill-color: var(--gold-dull);
+  margin: 0 10px;
+  display: inline-block;
+  animation: starletPulse 3s ease-in-out infinite alternate;
+}
+
+.personal-guest-name::after {
+  animation-delay: 1.5s;
+}
+
+.personal-invite-desc {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.personal-invite-desc strong {
+  color: var(--noir-black);
+  font-weight: 600;
+  border-bottom: 1px dotted var(--gold-dull);
+  padding-bottom: 1px;
+}
+
+@keyframes guestNameShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes guestBoxGlow {
+  0%, 100% {
+    box-shadow: 0 6px 20px rgba(20, 19, 17, 0.05), 0 0 0 1px rgba(186, 149, 90, 0.28);
+    border-color: rgba(186, 149, 90, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 28px rgba(186, 149, 90, 0.22), 0 0 0 1.5px rgba(212, 175, 55, 0.65);
+    border-color: rgba(212, 175, 55, 0.7);
+  }
+}
+
+@keyframes starletPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.8));
+  }
+}
+
+.invitation-intro {
+  font-family: var(--font-script);
+  font-size: 2.2rem;
+  color: var(--gold-dull);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.couple-names-wrap {
+  margin: 14px 0 18px;
+}
+
+/* Shimmering Black & Dull Gold Typography */
+.couple-name {
+  font-family: var(--font-serif-display);
+  font-size: clamp(2.4rem, 7.5vw, 4.1rem);
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #141311 0%, #9C7D4A 35%, #F0DEB7 50%, #9C7D4A 65%, #141311 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 8s linear infinite;
+  display: block;
+}
+
+@keyframes textShimmer {
+  to { background-position: 200% center; }
+}
+
+.couple-ampersand {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--noir-black);
+  margin: 4px 0;
+  display: block;
+}
+
+/* Hero Parents Dedication */
+.hero-parents-honor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  max-width: 580px;
+  margin: 4px auto 14px;
+  font-size: 0.84rem;
+  color: var(--gold-deep);
+  letter-spacing: 0.5px;
+}
+
+.hero-parents-honor .parent-honor-item strong {
+  color: var(--noir-black);
+  font-weight: 600;
+}
+
+.hero-parents-honor .parent-honor-separator {
+  color: var(--gold-primary);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .hero-parents-honor {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 0.78rem;
+  }
+  .hero-parents-honor .parent-honor-separator {
+    display: none;
+  }
+}
+
+.hero-divider {
+  width: 180px;
+  height: 24px;
+  margin: 12px auto 20px;
+  opacity: 0.9;
+}
+
+.invitation-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  line-height: 1.8;
+}
+
+.wedding-date-highlight {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 28px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  box-shadow: 0 4px 15px rgba(20, 19, 17, 0.05);
+}
+
+.wedding-day-name {
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--noir-black);
+  font-weight: 600;
+}
+
+.wedding-full-date {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  color: var(--noir-black);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin: 3px 0;
+}
+
+.wedding-venue-name {
+  font-size: 0.88rem;
+  letter-spacing: 1.5px;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Countdown Section
+   ========================================================================== */
+.section {
+  margin-top: 52px;
+  text-align: center;
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.section-subtitle {
+  font-family: var(--font-script);
+  font-size: 2rem;
+  color: var(--gold-dull);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  color: var(--noir-black);
+  text-transform: uppercase;
+}
+
+.section-divider {
+  width: 160px;
+  height: 20px;
+  margin: 8px auto 0;
+  opacity: 0.85;
+}
+
+/* Countdown Grid */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.countdown-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  padding: 18px 8px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.countdown-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px -4px rgba(20, 19, 17, 0.12);
+}
+
+.countdown-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3.5px;
+  background: var(--gradient-gold);
+}
+
+.countdown-number {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 5vw, 2.5rem);
+  font-weight: 600;
+  color: var(--noir-black);
+  line-height: 1.1;
+  display: block;
+}
+
+.countdown-label {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-top: 4px;
+  display: block;
+  font-weight: 600;
+}
+
+/* Calendar Button */
+.calendar-actions {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Luxury Black & Gold Button */
+.btn-luxury {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--noir-black);
+  color: #FAF4E8;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -4px rgba(20, 19, 17, 0.4), 0 0 15px rgba(186, 149, 90, 0.2);
+  transition: all 0.28s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-luxury svg {
+  stroke: var(--gold-light);
+}
+
+.btn-luxury::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: var(--gradient-shimmer);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+}
+
+.btn-luxury:hover::after {
+  left: 150%;
+}
+
+.btn-luxury:hover {
+  background: var(--noir-soft);
+  border-color: var(--gold-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -4px rgba(20, 19, 17, 0.5), 0 0 20px rgba(186, 149, 90, 0.35);
+  color: #FFFFFF;
+}
+
+.btn-luxury:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  background: #FFFFFF;
+  color: var(--noir-black);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.25s ease;
+}
+
+.btn-secondary svg {
+  stroke: var(--gold-deep);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-subtle);
+  border-color: var(--noir-black);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   The Couple Section
+   ========================================================================== */
+.couple-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+@media (min-width: 680px) {
+  .couple-cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.person-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 38px 24px 34px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.person-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.person-avatar-wrap {
+  width: clamp(170px, 36vw, 215px);
+  height: clamp(170px, 36vw, 215px);
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  padding: 5px;
+  border: 2px solid var(--gold-border-bright);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5EDE0 100%);
+  box-shadow: 0 10px 28px rgba(186, 149, 90, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.person-avatar-wrap:hover {
+  transform: scale(1.03);
+  border-color: var(--gold-primary);
+  box-shadow: 0 14px 32px rgba(186, 149, 90, 0.38);
+}
+
+.person-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.person-tag {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-dull);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.person-name {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  color: var(--noir-black);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+/* Bride & Groom Card Parents Dedication Badge */
+.person-parentage {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--gold-deep);
+  background: rgba(250, 246, 238, 0.95);
+  border: 1px solid var(--gold-border-bright);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(186, 149, 90, 0.1);
+  max-width: 100%;
+}
+
+.person-parentage svg {
+  color: var(--gold-primary);
+  flex-shrink: 0;
+}
+
+.person-parentage strong {
+  color: var(--noir-black);
+  font-weight: 600;
+}
+
+.person-bio {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Rings Interlock Divider */
+.rings-interlock {
+  width: 75px;
+  margin: 24px auto;
+  opacity: 0.92;
+  animation: floatSubtle 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Wedding Schedule / Itinerary
+   ========================================================================== */
+.timeline-container {
+  max-width: 600px;
+  margin: 24px auto 0;
+  position: relative;
+  text-align: left;
+  padding: 10px 0 10px 24px;
+}
+
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 31px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(20, 19, 17, 0.1) 0%, rgba(186, 149, 90, 0.6) 20%, rgba(186, 149, 90, 0.6) 80%, rgba(20, 19, 17, 0.1) 100%);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 28px;
+  padding-left: 36px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-icon-wrap {
+  position: absolute;
+  left: -20px;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--noir-black);
+  border: 2px solid var(--gold-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(20, 19, 17, 0.3);
+  z-index: 2;
+}
+
+.timeline-icon-wrap svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-light);
+}
+
+.timeline-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.timeline-card:hover {
+  transform: translateX(6px);
+  border-color: var(--noir-black);
+}
+
+.timeline-time {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--noir-black);
+  font-weight: 600;
+  background: var(--bg-card-subtle);
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  border: 1px solid rgba(186, 149, 90, 0.3);
+}
+
+.timeline-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--noir-black);
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Interactive Lightbox Triggers & Photo Zoom Cues
+   ========================================================================== */
+.lightbox-trigger {
+  cursor: pointer;
+  position: relative;
+}
+
+.photo-zoom-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(20, 19, 17, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--gold-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.25s, background-color 0.25s, color 0.25s;
+  z-index: 2;
+}
+
+.lightbox-trigger:hover .photo-zoom-hint {
+  transform: scale(1.15);
+  background: var(--noir-black);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.person-avatar-wrap.lightbox-trigger:hover {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 20px rgba(186, 149, 90, 0.4);
+}
+
+.person-avatar-wrap .photo-zoom-hint {
+  bottom: 10px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+}
+
+/* ==========================================================================
+   Venue & Location Section (Hotel Grand Guardian Ratnapura Architectural Showcase)
+   ========================================================================== */
+.venue-showcase-container {
+  max-width: 680px;
+  margin: 24px auto 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--gold-border-bright);
+  background: #FFFFFF;
+}
+
+/* Atmospheric Architectural Banner */
+.venue-hero-frame {
+  position: relative;
+  width: 100%;
+  height: clamp(230px, 35vw, 360px);
+  overflow: hidden;
+  background: var(--noir-black);
+}
+
+.venue-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.venue-hero-frame:hover .venue-hero-image {
+  transform: scale(1.04);
+  filter: brightness(1.05);
+}
+
+.venue-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 19, 17, 0.15) 0%, rgba(20, 19, 17, 0.4) 50%, rgba(20, 19, 17, 0.85) 100%);
+  pointer-events: none;
+}
+
+.venue-hero-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 2;
+}
+
+.venue-badge-pill {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #FFF6E5;
+  background: rgba(20, 19, 17, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--gold-border-bright);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.venue-badge-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #FAF4E8;
+  background: rgba(186, 149, 90, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(20, 19, 17, 0.3);
+  transition: background-color 0.25s, transform 0.25s;
+}
+
+.venue-hero-frame:hover .venue-badge-view {
+  background: #D4B680;
+  color: var(--noir-black);
+  transform: translateY(-2px);
+}
+
+/* Opulent Details Card */
+.venue-info-card {
+  padding: 34px 24px 30px;
+  position: relative;
+  background-image: radial-gradient(circle at top right, rgba(223, 200, 157, 0.15) 0%, transparent 50%);
+}
+
+.venue-header-wrap {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.venue-hotel-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--noir-black);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.venue-address {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.venue-address svg {
+  stroke: var(--gold-primary);
+}
+
+.venue-details-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  text-align: left;
+  max-width: 540px;
+  margin: 0 auto 26px;
+}
+
+@media (min-width: 540px) {
+  .venue-details-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.venue-detail-box {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.venue-detail-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-primary);
+}
+
+.venue-detail-box strong {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--noir-black);
+  margin-bottom: 2px;
+}
+
+.venue-detail-box span {
+  font-size: 0.84rem;
+  color: var(--text-body);
+}
+
+.venue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Moments of Love Gallery Section
+   ========================================================================== */
+.gallery-container {
+  max-width: 680px;
+  margin: 24px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.gallery-feature-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: var(--shadow-elevated);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 55px -10px rgba(20, 19, 17, 0.2);
+}
+
+.gallery-img-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius-md) - 6px);
+}
+
+.gallery-feature-img {
+  width: 100%;
+  height: clamp(280px, 45vw, 420px);
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(20, 19, 17, 0.1);
+}
+
+.gallery-feature-card:hover .gallery-feature-img {
+  transform: scale(1.03);
+}
+
+.gallery-card-caption {
+  padding: 14px 8px 4px;
+  text-align: center;
+}
+
+.gallery-caption-names {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--noir-black);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.gallery-caption-date {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+}
+
+.gallery-grid-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.gallery-sub-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery-sub-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-primary);
+  box-shadow: var(--shadow-elevated);
+}
+
+.gallery-sub-img {
+  width: 100%;
+  height: clamp(160px, 25vw, 240px);
+  object-fit: cover;
+  border-radius: calc(var(--radius-sm) - 2px);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-sub-card:hover .gallery-sub-img {
+  transform: scale(1.04);
+}
+
+/* ==========================================================================
+   Haute Couture Full-Screen Photo Lightbox Modal
+   ========================================================================== */
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.photo-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 9, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.lightbox-dialog {
+  position: relative;
+  z-index: 2;
+  max-width: min(92vw, 840px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.92) translateY(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.photo-lightbox.active .lightbox-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--noir-black);
+  border: 1.5px solid var(--gold-border-bright);
+  color: var(--gold-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.lightbox-close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--noir-soft);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.lightbox-frame {
+  position: relative;
+  background: #FFFFFF;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--gold-border-bright);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(186, 149, 90, 0.3);
+  max-width: 100%;
+}
+
+.lightbox-img-wrapper {
+  max-height: 72vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--noir-deep);
+  border-radius: calc(var(--radius-md) - 6px);
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-caption {
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  letter-spacing: 1.5px;
+  color: var(--noir-black);
+  text-align: center;
+  margin-top: 14px;
+  padding: 0 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Couple Admin Banner & Hidden Guest Link Generator
+   ========================================================================== */
+.couple-admin-bar {
+  margin: 14px auto 18px;
+  max-width: var(--max-width);
+  background: rgba(20, 19, 17, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: 30px;
+  padding: 8px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.couple-admin-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.couple-admin-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  color: #FFF2D6;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.admin-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ADE80;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4ADE80;
+}
+
+.couple-admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-admin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--gold-border);
+  color: #FAF4E8;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-admin-pill svg {
+  stroke: var(--gold-light);
+}
+
+.btn-admin-pill:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: var(--gold-light);
+  color: #FFFFFF;
+}
+
+.btn-admin-pill.exit-btn {
+  background: rgba(220, 38, 38, 0.28);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #FCA5A5;
+}
+
+.btn-admin-pill.exit-btn:hover {
+  background: rgba(220, 38, 38, 0.55);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Exclusive Couple Portal (Passcode Gated on Home URL)
+   ========================================================================== */
+.couple-portal-wrapper {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 16px;
+  box-sizing: border-box;
+}
+
+.couple-portal-container {
+  width: 100%;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.portal-brand-header {
+  margin-bottom: 24px;
+}
+
+.portal-rings-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(186, 149, 90, 0.12);
+  border: 1.5px solid var(--gold-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-deep);
+  box-shadow: 0 4px 16px rgba(186, 149, 90, 0.2);
+}
+
+.portal-brand-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--noir-black);
+}
+
+.portal-brand-sub {
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.portal-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-md);
+  padding: 34px 22px;
+  box-shadow: 0 20px 50px -10px rgba(20, 19, 17, 0.2);
+  position: relative;
+  background-image: radial-gradient(circle at top right, rgba(223, 200, 157, 0.2) 0%, transparent 60%);
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.portal-lock-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: rgba(186, 149, 90, 0.12);
+  border: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dull);
+}
+
+.portal-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--noir-black);
+  margin-bottom: 8px;
+}
+
+.portal-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto 20px;
+}
+
+.portal-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .portal-input-group {
+    flex-direction: column;
+  }
+}
+
+.portal-passcode-input {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+
+.portal-unlock-btn {
+  padding: 12px 28px;
+}
+
+.portal-error-msg {
+  color: #DC2626;
+  font-size: 0.82rem;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.portal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.portal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portal-header-left svg {
+  stroke: var(--gold-dull);
+}
+
+.portal-header-left h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--noir-black);
+}
+
+.portal-lock-again-btn {
+  background: rgba(20, 19, 17, 0.06);
+  border: 1px solid var(--gold-border);
+  color: var(--noir-soft);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.portal-lock-again-btn:hover {
+  background: var(--noir-black);
+  color: #FFFFFF;
+  border-color: var(--noir-black);
+}
+
+/* Couple Tool Section Visibility */
+.guest-view-mode .couple-portal-wrapper {
+  display: none !important;
+}
+
+.link-gen-locked-card {
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.lock-shield-badge {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: rgba(186, 149, 90, 0.12);
+  border: 1.5px solid var(--gold-border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-deep);
+  box-shadow: 0 4px 14px rgba(186, 149, 90, 0.15);
+}
+
+.lock-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--noir-black);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.lock-desc {
+  font-size: 0.88rem;
+  color: var(--text-body);
+  max-width: 450px;
+  margin: 0 auto 22px;
+  line-height: 1.55;
+}
+
+.passcode-form {
+  max-width: 390px;
+  margin: 0 auto;
+}
+
+.passcode-input-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+@media (max-width: 500px) {
+  .passcode-input-wrap {
+    flex-direction: column;
+  }
+}
+
+.passcode-input {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.passcode-error {
+  color: #DC2626;
+  font-size: 0.82rem;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); border-color: #DC2626; }
+  40%, 80% { transform: translateX(6px); border-color: #DC2626; }
+}
+
+.shake {
+  animation: shake 0.45s ease-in-out;
+}
+
+.unlocked-badge {
+  margin-left: auto;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #15803D;
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Couple Tool: Guest Link Generator Card
+   ========================================================================== */
+.link-gen-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-md);
+  padding: 34px 24px;
+  box-shadow: var(--shadow-elevated);
+  max-width: 600px;
+  margin: 24px auto 0;
+  text-align: left;
+  position: relative;
+  background-image: radial-gradient(circle at top right, rgba(223, 200, 157, 0.2) 0%, transparent 60%);
+}
+
+.link-gen-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.link-gen-header svg {
+  stroke: var(--gold-dull);
+}
+
+.link-gen-header h4 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--noir-black);
+  letter-spacing: 1px;
+}
+
+.link-gen-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--noir-black);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #FAF8F5;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dark);
+  font-size: 0.92rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  background: #FFFFFF;
+  border-color: var(--noir-black);
+  box-shadow: 0 0 0 3px rgba(20, 19, 17, 0.12);
+}
+
+.link-gen-output-box {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 18px 0;
+}
+
+.gen-link-readonly-input {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: var(--noir-black);
+  background: #FFFFFF !important;
+  border: 1px solid var(--gold-border-bright) !important;
+  cursor: text;
+  word-break: break-all;
+  user-select: all;
+  -webkit-user-select: all;
+}
+
+.copy-success-note {
+  margin-top: 8px;
+  font-size: 0.80rem;
+  color: #15803D;
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.link-gen-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 520px) {
+  .link-gen-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  .link-gen-actions #btnPreviewGeneratedLink {
+    grid-column: span 2;
+  }
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-whatsapp:hover {
+  background: #20BA5A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
+/* ==========================================================================
+   Wishes Guestbook Section
+   ========================================================================== */
+.guestbook-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 34px 22px;
+  box-shadow: var(--shadow-soft);
+  max-width: 600px;
+  margin: 24px auto 0;
+  text-align: left;
+}
+
+.wishes-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.wish-item {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  transition: transform 0.2s;
+}
+
+.wish-item:hover {
+  transform: translateX(4px);
+  border-color: var(--noir-black);
+}
+
+.wish-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.wish-author {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--noir-black);
+}
+
+.wish-time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.wish-text {
+  font-size: 0.86rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.wish-right-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Discreet Wish Deletion Button (Visible ONLY in Couple Mode) */
+.btn-delete-wish {
+  background: rgba(220, 38, 38, 0.12);
+  color: #DC2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete-wish:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #DC2626;
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  text-align: center;
+  padding: 48px 16px 24px;
+  margin-top: 60px;
+}
+
+.footer-quote {
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: var(--gold-dull);
+  margin-bottom: 12px;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.footer-quote:hover {
+  color: var(--gold-primary);
+}
+
+.footer-sub {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--noir-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-lock-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.28;
+  padding: 2px 4px;
+  color: var(--noir-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.footer-lock-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   Keyframes & Animations
+   ========================================================================== */
+@keyframes floatSubtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes pulseTouch {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 6px 14px rgba(20, 19, 17, 0.18)); }
+  50% { filter: drop-shadow(0 8px 24px rgba(186, 149, 90, 0.45)); }
+}
+
+@keyframes rotateDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Haute Couture Vertical Music Player Button (Left Center of Screen)
+   ========================================================================== */
+.vertical-music-btn {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 8px 14px 6px;
+  background: rgba(18, 17, 15, 0.90);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(186, 149, 90, 0.55);
+  border-left: none;
+  border-radius: 0 18px 18px 0;
+  box-shadow: 2px 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(186, 149, 90, 0.22);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vertical-music-btn:hover {
+  background: rgba(26, 24, 21, 0.96);
+  border-color: rgba(212, 175, 105, 0.85);
+  box-shadow: 4px 10px 30px rgba(0, 0, 0, 0.55), 0 0 22px rgba(186, 149, 90, 0.4);
+  padding-left: 8px;
+  padding-right: 10px;
+}
+
+.vertical-music-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* Vinyl Disc Styling */
+.music-disc-wrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.music-vinyl-disc {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #2b241c 0%, #171513 55%, #0d0c0a 100%);
+  border: 1.5px solid var(--gold-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55), inset 0 0 4px rgba(186, 149, 90, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.music-vinyl-disc::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(186, 149, 90, 0.35);
+  pointer-events: none;
+}
+
+.music-vinyl-disc::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(186, 149, 90, 0.22);
+  pointer-events: none;
+}
+
+.disc-center-label {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gradient-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.music-note-icon {
+  width: 8px;
+  height: 8px;
+  color: #141311;
+}
+
+/* Rotation active when playing */
+.vertical-music-btn.playing .music-vinyl-disc {
+  animation: rotateDisc 3.2s linear infinite;
+}
+
+.vertical-music-btn.paused .music-vinyl-disc {
+  animation-play-state: paused;
+}
+
+/* Audio Visualizer Equalizer Waves */
+.music-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5px;
+  height: 13px;
+  padding: 0 2px;
+}
+
+.music-bar {
+  width: 2.5px;
+  background: var(--gold-primary);
+  border-radius: 2px;
+  height: 3px;
+  transition: height 0.2s ease, background-color 0.3s;
+}
+
+.vertical-music-btn.playing .music-bar:nth-child(1) {
+  animation: barBounce 0.9s ease-in-out infinite alternate;
+}
+.vertical-music-btn.playing .music-bar:nth-child(2) {
+  animation: barBounce 0.75s ease-in-out 0.18s infinite alternate;
+}
+.vertical-music-btn.playing .music-bar:nth-child(3) {
+  animation: barBounce 1.05s ease-in-out 0.36s infinite alternate;
+}
+.vertical-music-btn.playing .music-bar:nth-child(4) {
+  animation: barBounce 0.65s ease-in-out 0.12s infinite alternate;
+}
+
+@keyframes barBounce {
+  0% { height: 3px; }
+  100% { height: 13px; background: #e6c886; }
+}
+
+/* Vertical Typography */
+.vertical-music-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+.v-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+}
+
+.v-state {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  background: rgba(186, 149, 90, 0.16);
+  border: 1px solid rgba(186, 149, 90, 0.35);
+  padding: 4px 2px;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.vertical-music-btn.playing .v-state {
+  color: #92e094;
+  border-color: rgba(146, 224, 148, 0.45);
+  background: rgba(146, 224, 148, 0.14);
+}
+
+.vertical-music-btn.needs-gesture {
+  box-shadow: 2px 8px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(186, 149, 90, 0.65);
+}
+
+/* ==========================================================================
+   Mobile-First Media Queries
+   ========================================================================== */
+@media (max-width: 480px) {
+  .site-wrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .hero-card {
+    padding: 38px 16px 32px;
+  }
+  .countdown-grid {
+    gap: 8px;
+  }
+  .countdown-number {
+    font-size: 1.55rem;
+  }
+  .countdown-label {
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+  }
+  .card-corner {
+    width: 36px;
+    height: 36px;
+  }
+  .vertical-music-btn {
+    padding: 10px 5px 12px 4px;
+    border-radius: 0 15px 15px 0;
+    gap: 7px;
+  }
+  .music-disc-wrap {
+    width: 32px;
+    height: 32px;
+  }
+  .music-vinyl-disc {
+    width: 30px;
+    height: 30px;
+  }
+  .disc-center-label {
+    width: 12px;
+    height: 12px;
+  }
+  .music-note-icon {
+    width: 7px;
+    height: 7px;
+  }
+  .v-text {
+    font-size: 0.58rem;
+    letter-spacing: 1.5px;
+  }
+  .v-state {
+    font-size: 0.46rem;
+    padding: 3px 2px;
+  }
+}
+
+

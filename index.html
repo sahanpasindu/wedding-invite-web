@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#BA955A">
+  <meta name="description" content="Wedding Invitation of Anu and Nirmal. Celebrating their union on November 5, 2026, at Hotel Grand Guardian, Ratnapura.">
+  <meta property="og:title" content="Wedding of Anu & Nirmal — November 5, 2026">
+  <meta property="og:description" content="Join us in celebrating the wedding of Anu & Nirmal at Hotel Grand Guardian, Ratnapura.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/couple-close.jpeg">
+
+  <title>Anu & Nirmal | Wedding Celebration</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/rings.svg">
+
+  <!-- Google Fonts: Original Luxury Royal Serif & Script Suite -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=20261105.15">
+</head>
+<body class="envelope-active">
+
+  <!-- Background Golden Sparkles & Stardust Canvas -->
+  <canvas id="sparkleCanvas" class="sparkle-canvas"></canvas>
+
+  <!-- ========================================================================
+       1. Interactive Envelope & Wax Seal Intro
+       ======================================================================== -->
+  <div class="envelope-overlay" id="envelopeOverlay">
+    <!-- Subtle Falling Floral Petals & Blossom Flutter Canvas for Envelope -->
+    <canvas id="envelopePetalCanvas" class="envelope-petal-canvas"></canvas>
+
+    <div class="envelope-card">
+      <div class="envelope-sub">Wedding Invitation</div>
+      <h1 class="envelope-names">Anu &amp; Nirmal</h1>
+      <div class="envelope-date">November 5, 2026 &bull; Rathnapura</div>
+
+      <!-- Personalized Guest Dedication on Envelope -->
+      <div class="envelope-recipient-wrap" id="envelopeGuestCard">
+        <span class="envelope-recipient-sub">Specially Invited</span>
+        <h2 class="envelope-recipient-name" id="envelopeGuestName">Honoured Guests</h2>
+        <span class="envelope-recipient-scope" id="envelopeGuestScope">You &amp; Your Family</span>
+      </div>
+      
+      <!-- Wax Seal Interactive Button -->
+      <button type="button" class="wax-seal-btn" id="openInviteBtn" aria-label="Open Wedding Invitation">
+        <div class="wax-seal-inner">
+          <span class="wax-monogram">A &amp; N</span>
+          <span class="wax-text">Open</span>
+        </div>
+      </button>
+
+      <div class="envelope-prompt">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+          <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+          <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+          <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+        </svg>
+        <span>Tap wax seal to open</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       Floating Vertical Luxury Music Player (Left Center of Screen)
+       ======================================================================== -->
+  <button type="button" class="vertical-music-btn" id="verticalMusicBtn" aria-label="Play Wedding Music" title="Play / Pause Wedding Music">
+    <div class="music-disc-wrap">
+      <div class="music-vinyl-disc" id="musicVinylDisc">
+        <div class="disc-grooves"></div>
+        <div class="disc-center-label">
+          <svg class="music-note-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="music-bars" id="musicBars" aria-hidden="true">
+      <span class="music-bar"></span>
+      <span class="music-bar"></span>
+      <span class="music-bar"></span>
+      <span class="music-bar"></span>
+    </div>
+    <div class="vertical-music-tag">
+      <span class="v-text">MUSIC</span>
+      <span class="v-state" id="musicStateBadge">PLAY</span>
+    </div>
+  </button>
+
+  <!-- Background Wedding Music Audio Source -->
+  <audio id="weddingMusicAudio" loop preload="auto">
+    <source src="assets/music.mp3" type="audio/mpeg">
+    <source src="assets/music.m4a" type="audio/mp4">
+  </audio>
+
+  <!-- Sticky Bottom Navigation Bar (Revealed after envelope opened) -->
+  <nav class="mobile-action-bar" id="mobileActionBar" aria-label="Quick Actions" style="display: none;">
+    <a href="#scheduleSection" class="action-bar-item">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Events</span>
+    </a>
+    <a href="#venueSection" class="action-bar-item">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Venue</span>
+    </a>
+    <a href="#gallerySection" class="action-bar-item highlight">
+      <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span>Moments</span>
+    </a>
+    <a href="#guestbookSection" class="action-bar-item">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Wishes</span>
+    </a>
+  </nav>
+
+  <!-- ========================================================================
+       Exclusive Couple Portal (Passcode Gated on Home URL)
+       ======================================================================== -->
+  <div class="couple-portal-wrapper" id="couplePortalGate" style="display: none;">
+    <div class="couple-portal-container">
+
+      <!-- Monogram & Header -->
+      <div class="portal-brand-header">
+        <div class="portal-rings-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="9" cy="12" r="6"></circle>
+            <circle cx="15" cy="12" r="6"></circle>
+          </svg>
+        </div>
+        <h1 class="portal-brand-title">Anu &amp; Nirmal</h1>
+        <div class="portal-brand-sub">Private Couple Workspace</div>
+      </div>
+
+      <!-- State 1: Locked Card (Passcode 2026) -->
+      <div class="portal-card" id="portalLockedCard">
+        <div class="portal-lock-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 class="portal-card-title">Enter Couple Passcode</h2>
+        <p class="portal-card-desc">
+          This wedding invitation website is private. Enter your couple passcode to access your workspace and generate guest links.
+        </p>
+
+        <form id="portalUnlockForm" class="portal-form">
+          <div class="portal-input-group">
+            <input type="password" id="portalPasscodeInput" class="form-input portal-passcode-input" placeholder="Enter Passcode" autocomplete="off" autofocus>
+            <button type="submit" class="btn-luxury portal-unlock-btn" id="btnPortalUnlock">
+              <span>Unlock</span>
+            </button>
+          </div>
+          <div class="portal-error-msg" id="portalErrorMsg" style="display: none;">
+            Incorrect passcode. Please try again.
+          </div>
+        </form>
+      </div>
+
+      <!-- State 2: Unlocked Link Generator Card -->
+      <div class="portal-card" id="portalGeneratorCard" style="display: none;">
+        <div class="portal-card-header">
+          <div class="portal-header-left">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <h3>Guest Link Creator</h3>
+          </div>
+          <button type="button" class="portal-lock-again-btn" id="btnLockPortalAgain" title="Lock Workspace">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Lock Portal</span>
+          </button>
+        </div>
+
+        <p class="portal-card-desc" style="text-align: left; margin-bottom: 20px;">
+          Type a guest name below to generate their customized invitation link in real time.
+        </p>
+
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="genGuestName">Guest / Family Name</label>
+          <input type="text" id="genGuestName" class="form-input" placeholder="e.g. Uncle Bandara &amp; Family, Kasun &amp; Shenali, Aunty Mala" value="Uncle Bandara &amp; Family" autocomplete="off">
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="genInviteScope">Invitation Scope</label>
+          <select id="genInviteScope" class="form-select">
+            <option value="family" selected>You &amp; Your Family</option>
+            <option value="husband">You &amp; Your Husband</option>
+            <option value="wife">You &amp; Your Wife</option>
+            <option value="partner">You &amp; Your Partner</option>
+            <option value="you">You (Solo)</option>
+          </select>
+        </div>
+
+        <div class="link-gen-output-box" style="text-align: left;">
+          <label class="form-label" for="genLinkInput" style="margin-bottom: 6px; font-size: 0.74rem; color: var(--gold-deep); display: flex; justify-content: space-between; align-items: center;">
+            <span>Generated Guest Link</span>
+            <span style="font-size: 0.68rem; font-weight: normal; color: var(--text-muted);">Live Hosted URL</span>
+          </label>
+          <div class="link-input-copy-wrap">
+            <input type="text" id="genLinkInput" class="form-input gen-link-readonly-input" readonly value="" placeholder="Your customized link will appear here...">
+          </div>
+          <div class="copy-success-note" id="copySuccessNote" style="display: none;">
+            ✓ Link copied to clipboard! You can paste and send it anywhere.
+          </div>
+        </div>
+
+        <div class="link-gen-actions">
+          <button type="button" class="btn-luxury" id="btnCopyGeneratedLink">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copyBtnText">Copy Guest Link</span>
+          </button>
+          <a id="btnShareWhatsAppGuest" class="btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.76-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.12.17 1.78 2.71 4.3 3.8 2.53 1.09 2.53.73 2.98.69.46-.05 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29z"/>
+            </svg>
+            <span>Send on WhatsApp</span>
+          </a>
+          <a href="#" target="_blank" class="btn-secondary" id="btnPreviewGeneratedLink" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span>Open &amp; Test Link</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. Main Content Wrapper (Exclusively for Guests with Personalized Links)
+       ======================================================================== -->
+  <main class="site-wrapper" id="siteWrapper">
+
+    <!-- Hero Card Section -->
+    <header class="hero-section">
+      <div class="hero-card">
+        <!-- Luxury Ornate Corners -->
+        <img src="assets/corner.svg" class="card-corner top-left" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner top-right" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner bottom-left" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner bottom-right" alt="" aria-hidden="true">
+
+        <div class="hero-badge">Save The Date</div>
+
+        <!-- Personalized Guest Dedication Card -->
+        <div class="personal-invitation-box" id="personalInvitationBox">
+          <span class="personal-invite-tag">Especially For</span>
+          <h2 class="personal-guest-name" id="heroGuestName">Honoured Guests</h2>
+          <p class="personal-invite-desc">
+            We joyfully invite <strong id="heroGuestScope">You &amp; Your Family</strong> to share in our wedding celebration.
+          </p>
+        </div>
+
+        <div class="invitation-intro">Together with their families</div>
+
+        <div class="couple-names-wrap">
+          <span class="couple-name">Anu</span>
+          <span class="couple-ampersand">&amp;</span>
+          <span class="couple-name">Nirmal</span>
+        </div>
+
+        <div class="hero-parents-honor">
+          <span class="parent-honor-item">Beloved Daughter of <strong>Mr. &amp; Mrs. Diddeniya</strong></span>
+          <span class="parent-honor-separator" aria-hidden="true">&bull;</span>
+          <span class="parent-honor-item">Beloved Son of <strong>Mr. &amp; Mrs. Edirisinghe</strong></span>
+        </div>
+
+        <img src="assets/divider.svg" alt="" class="hero-divider" aria-hidden="true">
+
+        <p class="invitation-text">
+          Request the honour of your presence to celebrate their wedding union and begin their happily ever after.
+        </p>
+
+        <div class="wedding-date-highlight">
+          <span class="wedding-day-name">Thursday</span>
+          <span class="wedding-full-date">05 . November . 2026</span>
+          <span class="wedding-venue-name">Hotel Grand Guardian &bull; Ratnapura</span>
+        </div>
+
+        <div class="calendar-actions">
+          <a href="#scheduleSection" class="btn-luxury">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Celebration Program</span>
+          </a>
+          <button type="button" class="btn-secondary" id="btnAddToGoogle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Add to Calendar</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         3. Live Countdown Timer Section
+         ====================================================================== -->
+    <section class="section reveal" id="countdownSection">
+      <div class="section-header">
+        <span class="section-subtitle">Counting Down to Forever</span>
+        <h2 class="section-title">The Big Day</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <div class="countdown-grid">
+        <div class="countdown-card">
+          <span class="countdown-number" id="days">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-card">
+          <span class="countdown-number" id="hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-card">
+          <span class="countdown-number" id="minutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-card">
+          <span class="countdown-number" id="seconds">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. The Couple & Story Section
+         ====================================================================== -->
+    <section class="section" id="coupleSection">
+      <div class="section-header reveal">
+        <span class="section-subtitle">The Happy Couple</span>
+        <h2 class="section-title">Bride &amp; Groom</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <div class="couple-cards-grid">
+        <!-- Bride Card -->
+        <div class="person-card reveal-left">
+          <div class="person-avatar-wrap lightbox-trigger" data-lightbox="img/anu.jpeg" data-caption="Anu — The Radiant Bride" title="Tap to view portrait">
+            <img src="img/anu.jpeg" alt="Anu - The Bride" class="person-avatar-img">
+            <span class="photo-zoom-hint" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+          <div class="person-tag">The Bride</div>
+          <h3 class="person-name">Anu</h3>
+          <div class="person-parentage">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Beloved Daughter of <strong>Mr. &amp; Mrs. Diddeniya</strong></span>
+          </div>
+          <p class="person-bio">
+            A soul of kindness, grace, and radiant warmth. Ready to embark on the grandest adventure with her best friend and soulmate.
+          </p>
+        </div>
+
+        <!-- Groom Card -->
+        <div class="person-card reveal-right">
+          <div class="person-avatar-wrap lightbox-trigger" data-lightbox="img/nirmal.jpeg" data-caption="Nirmal — The Groom" title="Tap to view portrait">
+            <img src="img/nirmal.jpeg" alt="Nirmal - The Groom" class="person-avatar-img">
+            <span class="photo-zoom-hint" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+          <div class="person-tag">The Groom</div>
+          <h3 class="person-name">Nirmal</h3>
+          <div class="person-parentage">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Beloved Son of <strong>Mr. &amp; Mrs. Edirisinghe</strong></span>
+          </div>
+          <p class="person-bio">
+            Steadfast, loving, and always bringing laughter. Blessed to hold Anu's hand for all the tomorrows to come.
+          </p>
+        </div>
+      </div>
+
+      <img src="assets/rings.svg" alt="Entwined Golden Rings" class="rings-interlock reveal reveal-delay-2">
+    </section>
+
+    <!-- ======================================================================
+         5. Wedding Itinerary / Schedule Section
+         ====================================================================== -->
+    <section class="section reveal" id="scheduleSection">
+      <div class="section-header">
+        <span class="section-subtitle">Celebration Program</span>
+        <h2 class="section-title">The Wedding Day</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <div class="timeline-container">
+        <!-- Event 1 -->
+        <div class="timeline-item">
+          <div class="timeline-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-time">09:30 AM</span>
+            <h4 class="timeline-title">Poruwa Ceremony &amp; Blessings</h4>
+            <p class="timeline-desc">Traditional customs, tying of the sacred thread, and chanting of Jayamangala Gatha.</p>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="timeline-item">
+          <div class="timeline-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-time">11:00 AM</span>
+            <h4 class="timeline-title">Welcome Drinks &amp; Canapés</h4>
+            <p class="timeline-desc">Refreshing tropical cocktails, canapés, and meeting family and loved ones.</p>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="timeline-item">
+          <div class="timeline-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-time">12:00 PM</span>
+            <h4 class="timeline-title">Grand Couple Entry &amp; First Dance</h4>
+            <p class="timeline-desc">Welcoming the newlyweds into the Red Hall followed by their first dance.</p>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="timeline-item">
+          <div class="timeline-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-time">01:00 PM</span>
+            <h4 class="timeline-title">Royal Wedding Banquet</h4>
+            <p class="timeline-desc">An exquisite gourmet lunch feast featuring Sri Lankan and International delicacies.</p>
+          </div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="timeline-item">
+          <div class="timeline-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-time">03:30 PM</span>
+            <h4 class="timeline-title">Cake Cutting &amp; Farewell</h4>
+            <p class="timeline-desc">Champagne toast, wedding cake cutting, and sending off the newly wedded couple.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         6. Venue & Location (Hotel Grand Guardian Ratnapura Architectural Showcase)
+         ====================================================================== -->
+    <section class="section reveal" id="venueSection">
+      <div class="section-header">
+        <span class="section-subtitle">Where We Say I Do</span>
+        <h2 class="section-title">The Grand Venue</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <!-- Architectural Venue Hero Showcase with Ambient Lighting -->
+      <div class="venue-showcase-container">
+        <!-- Visual Backdrop Frame with Ornate Filigree -->
+        <div class="venue-hero-frame lightbox-trigger" data-lightbox="img/venue.jpg" data-caption="Hotel Grand Guardian — Red Hall, Ratnapura" title="Tap to view full resolution Red Hall">
+          <img src="img/venue.jpg" alt="Hotel Grand Guardian Red Hall Ratnapura" class="venue-hero-image">
+          <div class="venue-hero-overlay"></div>
+          
+          <div class="venue-hero-badge">
+            <span class="venue-badge-pill">★ Red Hall</span>
+            <span class="venue-badge-view">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+              Tap to Expand Photo
+            </span>
+          </div>
+        </div>
+
+        <!-- Opulent Glass Details Card -->
+        <div class="venue-info-card">
+          <img src="assets/corner.svg" class="card-corner top-left" alt="" aria-hidden="true">
+          <img src="assets/corner.svg" class="card-corner top-right" alt="" aria-hidden="true">
+          
+          <div class="venue-header-wrap">
+            <h3 class="venue-hotel-name">Hotel Grand Guardian</h3>
+            <p class="venue-address">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Ratnapura, Sabaragamuwa Province, Sri Lanka
+            </p>
+          </div>
+
+          <div class="venue-details-list">
+            <div class="venue-detail-box">
+              <strong>Reception Hall</strong>
+              <span>Red Hall, Hotel Grand Guardian</span>
+            </div>
+            <div class="venue-detail-box">
+              <strong>Date &amp; Time</strong>
+              <span>Thursday, Nov 5, 2026 &bull; 09:30 AM</span>
+            </div>
+            <div class="venue-detail-box">
+              <strong>Parking &amp; Access</strong>
+              <span>Complimentary Valet &amp; Spacious Grounds</span>
+            </div>
+            <div class="venue-detail-box">
+              <strong>Atmosphere</strong>
+              <span>Luxury banquet dining &amp; mountain garden views</span>
+            </div>
+          </div>
+
+          <div class="venue-actions">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Grand+Guardian+Ratnapura" target="_blank" rel="noopener noreferrer" class="btn-luxury">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Open in Google Maps</span>
+            </a>
+            <button type="button" class="btn-secondary" id="btnCopyAddress">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy Address</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         7. Moments of Love Gallery (Interactive Lightbox Supported)
+         ====================================================================== -->
+    <section class="section reveal" id="gallerySection">
+      <div class="section-header">
+        <span class="section-subtitle">Cherished Memories</span>
+        <h2 class="section-title">Moments of Love</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <div class="gallery-container">
+        <div class="gallery-feature-card lightbox-trigger" data-lightbox="img/couple-close.jpeg" data-caption="Anu &amp; Nirmal — Hand in hand into forever &bull; 05.11.2026" title="Tap to view full size">
+          <div class="gallery-img-wrap">
+            <img src="img/couple-close.jpeg" alt="Anu and Nirmal" class="gallery-feature-img">
+            <span class="photo-zoom-hint" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+          <div class="gallery-card-caption">
+            <span class="gallery-caption-names">Anu &amp; Nirmal</span>
+            <span class="gallery-caption-date">Together into forever &bull; 05 . 11 . 2026</span>
+          </div>
+        </div>
+
+        <div class="gallery-grid-dual">
+          <div class="gallery-sub-card lightbox-trigger" data-lightbox="img/couple.jpeg" data-caption="Anu &amp; Nirmal — Bound by eternal love" title="Tap to view full size">
+            <div class="gallery-img-wrap">
+              <img src="img/couple.jpeg" alt="Anu &amp; Nirmal Together" class="gallery-sub-img">
+              <span class="photo-zoom-hint" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+              </span>
+            </div>
+          </div>
+          <div class="gallery-sub-card lightbox-trigger" data-lightbox="img/gallery-1.jpeg" data-caption="Pure Joy &amp; Radiant Smiles" title="Tap to view full size">
+            <div class="gallery-img-wrap">
+              <img src="img/gallery-1.jpeg" alt="Celebration Moment" class="gallery-sub-img">
+              <span class="photo-zoom-hint" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         8. Wishes Guestbook Section
+         ====================================================================== -->
+    <section class="section reveal" id="guestbookSection">
+      <div class="section-header">
+        <span class="section-subtitle">Love &amp; Blessings</span>
+        <h2 class="section-title">Guestbook</h2>
+        <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true">
+      </div>
+
+      <div class="guestbook-card">
+        <form id="wishForm">
+          <div class="form-group">
+            <label for="wishAuthor" class="form-label">Your Name</label>
+            <input type="text" id="wishAuthor" class="form-input" placeholder="e.g. Kasun & Shenali" required>
+          </div>
+          <div class="form-group">
+            <label for="wishText" class="form-label">Blessing / Message</label>
+            <textarea id="wishText" class="form-textarea" rows="2" placeholder="Write your heartfelt wishes for the couple..." required></textarea>
+          </div>
+          <button type="submit" class="btn-luxury" style="width: 100%;">
+            <span>Send Blessing</span>
+          </button>
+        </form>
+
+        <div class="wishes-list" id="wishesContainer">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         10. Footer
+         ====================================================================== -->
+    <footer class="site-footer reveal">
+      <img src="assets/divider.svg" alt="" class="section-divider" aria-hidden="true" style="margin-bottom: 22px;">
+      <div class="footer-quote" id="footerSecretTap" title="Tap 3 times to unlock couple tools">With Love, Joy &amp; Gratitude</div>
+      <div class="footer-sub">
+        Anu &amp; Nirmal &bull; November 5, 2026 &bull; Hotel Grand Guardian, Ratnapura
+        <button type="button" id="footerLockBtn" class="footer-lock-btn" title="Couple Login / Link Tool Unlock" aria-label="Couple Login">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </button>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ========================================================================
+       Haute Couture Full-Screen Photo Lightbox Modal
+       ======================================================================== -->
+  <div id="photoLightbox" class="photo-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo Lightbox">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-dialog">
+      <button type="button" class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="Close Lightbox">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="lightbox-frame">
+        <img src="assets/corner.svg" class="card-corner top-left" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner top-right" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner bottom-left" alt="" aria-hidden="true">
+        <img src="assets/corner.svg" class="card-corner bottom-right" alt="" aria-hidden="true">
+        
+        <div class="lightbox-img-wrapper">
+          <img src="" alt="" id="lightboxImg" class="lightbox-img">
+        </div>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="js/main.js?v=20261105.15"></script>
+</body>
+</html>

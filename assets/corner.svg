@@ -1,0 +1,18 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cornerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dfba73"/>
+      <stop offset="50%" stop-color="#b89355"/>
+      <stop offset="100%" stop-color="#8c6c38"/>
+    </linearGradient>
+  </defs>
+  <!-- Corner Outer Border lines -->
+  <path d="M5,95 L5,15 A10,10 0 0 1 15,5 L95,5" fill="none" stroke="url(#cornerGold)" stroke-width="1.5" />
+  <path d="M12,85 L12,20 A8,8 0 0 1 20,12 L85,12" fill="none" stroke="url(#cornerGold)" stroke-width="0.8" opacity="0.7" />
+
+  <!-- Corner Filigree Swirls -->
+  <path d="M15,15 C25,25 35,18 45,28 C30,32 25,45 15,45" fill="none" stroke="url(#cornerGold)" stroke-width="1.2" />
+  <circle cx="15" cy="15" r="3.5" fill="url(#cornerGold)"/>
+  <circle cx="28" cy="28" r="2" fill="url(#cornerGold)"/>
+  <path d="M18,30 C22,25 28,26 32,22" fill="none" stroke="url(#cornerGold)" stroke-width="0.8"/>
+</svg>
