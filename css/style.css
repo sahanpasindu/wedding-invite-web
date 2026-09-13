@@ -311,7 +311,10 @@ body.envelope-active .mobile-action-bar {
   padding: 16px 14px;
   text-align: center;
   overflow: hidden;
-  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 1.1s ease, z-index 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease, box-shadow 1.1s ease, z-index 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -344,97 +347,109 @@ body.envelope-active .mobile-action-bar {
   padding: 2px 14px;
 }
 
+/* Reveal letter when flap opens */
+.envelope-box.flap-opened .envelope-letter {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* When unsealed: Letter slides dramatically upwards out of the pocket */
 .envelope-box.letter-extracted .envelope-letter {
   transform: translateY(-135px) scale(1.04);
   z-index: 10;
+  pointer-events: auto;
   box-shadow: 0 35px 80px -15px rgba(20, 19, 17, 0.45), 0 0 35px rgba(186, 149, 90, 0.35);
 }
 
-/* 3. Envelope Front Pocket (Lower triangle & side folds) */
+/* 3. Envelope Front Pocket (Left, Right & Bottom triangular folds meeting at center) */
 .envelope-pocket {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.pocket-bottom {
+/* Left Angle / Flap */
+.pocket-flap-left {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60%;
-  background: linear-gradient(0deg, #FAF7F0 0%, #EFE8DA 100%);
-  clip-path: polygon(0 100%, 50% 20%, 100% 100%);
-  filter: drop-shadow(0 -3px 8px rgba(20, 19, 17, 0.08));
-  border-bottom: 2px solid rgba(186, 149, 90, 0.4);
+  inset: 0;
+  background: linear-gradient(135deg, #F4EFE5 0%, #E6DEC9 100%);
+  clip-path: polygon(0 0, 53% 50%, 0 100%);
+  filter: drop-shadow(2px 0 6px rgba(20, 19, 17, 0.08));
+}
+
+/* Right Angle / Flap */
+.pocket-flap-right {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(225deg, #EFE8DA 0%, #DFD5BE 100%);
+  clip-path: polygon(100% 0, 100% 100%, 47% 50%);
+  filter: drop-shadow(-2px 0 6px rgba(20, 19, 17, 0.08));
+}
+
+/* Bottom Angle / Flap */
+.pocket-flap-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #FAF7F0 0%, #EDE4D2 100%);
+  clip-path: polygon(0 100%, 50% 46%, 100% 100%);
+  filter: drop-shadow(0 -3px 8px rgba(20, 19, 17, 0.12));
+  border-bottom: 2px solid rgba(186, 149, 90, 0.35);
   border-radius: 0 0 12px 12px;
 }
 
-.pocket-left {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 55%;
-  height: 100%;
-  background: linear-gradient(135deg, #F5EFE3 0%, #E6DEC9 100%);
-  clip-path: polygon(0 0, 0 100%, 100% 100%);
-  border-radius: 12px 0 0 12px;
-  filter: drop-shadow(2px 0 6px rgba(20, 19, 17, 0.06));
-}
-
-.pocket-right {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 55%;
-  height: 100%;
-  background: linear-gradient(225deg, #EFE8DA 0%, #DFD5BE 100%);
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  border-radius: 0 12px 12px 0;
-  filter: drop-shadow(-2px 0 6px rgba(20, 19, 17, 0.06));
-}
-
-/* 4. Top Triangular Flap (3D Flip Animation) */
+/* 4. Top Triangular Flap & Wax Seal (Hinged at top, in front of all 4 angles) */
 .envelope-flap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 62%;
+  height: 100%;
   transform-origin: top center;
   transform-style: preserve-3d;
-  z-index: 5;
+  z-index: 15;
+  pointer-events: none;
   transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.38s;
 }
 
-.flap-front {
+.flap-face {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
+  overflow: visible;
+}
+
+.flap-front {
+  z-index: 2;
+}
+
+.flap-triangle-shape {
+  position: absolute;
+  inset: 0;
   background: linear-gradient(180deg, #FAF8F2 0%, #EDE3D0 100%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  filter: drop-shadow(0 6px 14px rgba(20, 19, 17, 0.2));
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  clip-path: polygon(0 0, 100% 0, 50% 55%);
+  filter: drop-shadow(0 6px 16px rgba(20, 19, 17, 0.22));
 }
 
 .flap-back {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.flap-back-triangle-shape {
   position: absolute;
   inset: 0;
-  transform: rotateX(180deg);
-  backface-visibility: hidden;
   background: linear-gradient(135deg, #FAF6EE 0%, #DFD0B8 100%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 55%);
   filter: drop-shadow(0 -4px 10px rgba(20, 19, 17, 0.15));
 }
 
 .flap-back-liner {
   position: absolute;
-  inset: 6px;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  inset: 4px;
+  clip-path: polygon(0 0, 100% 0, 50% 55%);
   background: radial-gradient(rgba(186, 149, 90, 0.35) 1.2px, transparent 1.2px);
   background-size: 14px 14px;
 }
@@ -530,13 +545,14 @@ body.envelope-active .mobile-action-bar {
   }
 }
 
-/* Wax Seal Button (Positioned at Flap Apex) */
+/* Wax Seal Button (Positioned at Center over the intersection of all 4 angles) */
 .flap-front .wax-seal-btn {
   position: absolute;
-  bottom: -36px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  pointer-events: auto;
 }
 
 .wax-seal-btn {
@@ -556,23 +572,24 @@ body.envelope-active .mobile-action-bar {
   outline: none;
 }
 
-.wax-seal-btn:hover, .wax-seal-btn:focus-visible {
-  transform: scale(1.08);
+.flap-front .wax-seal-btn:hover,
+.flap-front .wax-seal-btn:focus-visible {
+  transform: translate(-50%, -50%) scale(1.08);
   box-shadow: 0 16px 34px -2px rgba(20, 19, 17, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.6);
 }
 
-.wax-seal-btn:active {
-  transform: scale(0.95);
+.flap-front .wax-seal-btn:active {
+  transform: translate(-50%, -50%) scale(0.95);
 }
 
-.wax-seal-btn.unsealing {
+.flap-front .wax-seal-btn.unsealing {
   animation: unsealPop 0.6s ease forwards;
 }
 
 @keyframes unsealPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.18) rotate(-10deg); filter: brightness(1.3); }
-  100% { transform: scale(0) rotate(20deg); opacity: 0; }
+  0% { transform: translate(-50%, -50%) scale(1); }
+  40% { transform: translate(-50%, -50%) scale(1.18) rotate(-10deg); filter: brightness(1.3); }
+  100% { transform: translate(-50%, -50%) scale(0) rotate(20deg); opacity: 0; }
 }
 
 .wax-seal-inner {
@@ -2904,6 +2921,17 @@ body.envelope-active .mobile-action-bar {
   }
   .envelope-box.letter-extracted .envelope-letter {
     transform: translateY(-105px) scale(1.02);
+  }
+  .wax-seal-btn {
+    width: 74px;
+    height: 74px;
+  }
+  .wax-seal-inner {
+    width: 66px;
+    height: 66px;
+  }
+  .wax-monogram {
+    font-size: 1.05rem;
   }
   .open-envelope-flap-bg {
     top: -42px;

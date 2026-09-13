@@ -64,17 +64,21 @@
           </div>
         </div>
 
-        <!-- 3. Envelope Front Pocket (Lower & Side triangular folds) -->
+        <!-- 3. Envelope Front Pocket (Left, Right & Bottom triangular folds meeting at center) -->
         <div class="envelope-pocket">
-          <div class="pocket-left"></div>
-          <div class="pocket-right"></div>
-          <div class="pocket-bottom"></div>
+          <!-- Left Angle / Flap -->
+          <div class="pocket-flap-left"></div>
+          <!-- Right Angle / Flap -->
+          <div class="pocket-flap-right"></div>
+          <!-- Bottom Angle / Flap -->
+          <div class="pocket-flap-bottom"></div>
         </div>
 
-        <!-- 4. Top Triangular Flap (Hinged at top for 3D flip) -->
+        <!-- 4. Top Triangular Flap & Wax Seal (Hinged at top, in front of all 4 angles) -->
         <div class="envelope-flap" id="envelopeFlap">
-          <div class="flap-front">
-            <!-- Wax Seal Interactive Button (Mounted at flap tip) -->
+          <div class="flap-face flap-front">
+            <div class="flap-triangle-shape"></div>
+            <!-- Wax Seal Button: Positioned at Center over the intersection of all 4 angles -->
             <button type="button" class="wax-seal-btn" id="openInviteBtn" aria-label="Open Wedding Invitation">
               <div class="wax-seal-inner">
                 <span class="wax-monogram">A &amp; N</span>
@@ -82,8 +86,10 @@
               </div>
             </button>
           </div>
-          <div class="flap-back">
-            <div class="flap-back-liner"></div>
+          <div class="flap-face flap-back">
+            <div class="flap-back-triangle-shape">
+              <div class="flap-back-liner"></div>
+            </div>
           </div>
         </div>
       </div>
