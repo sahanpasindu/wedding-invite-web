@@ -407,6 +407,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const musicStateBadge = document.getElementById('musicStateBadge');
   let isMusicPlaying = false;
 
+  // Gentle, comfortable ambient background volume
+  if (weddingMusicAudio) {
+    weddingMusicAudio.volume = 0.35;
+  }
+
   function updateMusicUI(playing) {
     if (!verticalMusicBtn) return;
     if (playing) {
@@ -427,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function playWeddingMusic() {
     if (!weddingMusicAudio) return;
-    weddingMusicAudio.volume = 0.85;
+    weddingMusicAudio.volume = 0.35;
     const playPromise = weddingMusicAudio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
