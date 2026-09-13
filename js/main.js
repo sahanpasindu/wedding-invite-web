@@ -181,6 +181,120 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
+     2B. Subtle Falling Blossom Petals Animation (Exclusive to Envelope Intro)
+     ========================================================================== */
+  let cancelEnvelopePetals = null;
+  const envelopePetalCanvas = document.getElementById('envelopePetalCanvas');
+  if (envelopePetalCanvas) {
+    const eCtx = envelopePetalCanvas.getContext('2d');
+    let eWidth, eHeight;
+    let petals = [];
+    const petalCount = window.innerWidth < 600 ? 18 : 28;
+    let eAnimId = null;
+
+    function resizeEnvelopePetals() {
+      eWidth = envelopePetalCanvas.width = window.innerWidth;
+      eHeight = envelopePetalCanvas.height = window.innerHeight;
+    }
+    resizeEnvelopePetals();
+    window.addEventListener('resize', resizeEnvelopePetals);
+
+    class SubtlePetal {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * eWidth;
+        this.y = init ? Math.random() * eHeight : -20;
+        this.size = Math.random() * 6 + 5;
+        this.speedY = Math.random() * 0.55 + 0.35;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.wobble = Math.random() * Math.PI * 2;
+        this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.02;
+        this.pitch = Math.random() * Math.PI;
+        this.pitchSpeed = Math.random() * 0.025 + 0.01;
+        this.opacity = Math.random() * 0.45 + 0.35;
+        this.colorType = Math.random();
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.wobble += this.wobbleSpeed;
+        this.x += Math.sin(this.wobble) * 0.5 + this.speedX;
+        this.rotation += this.rotSpeed;
+        this.pitch += this.pitchSpeed;
+
+        if (this.y > eHeight + 20) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        eCtx.save();
+        eCtx.translate(this.x, this.y);
+        eCtx.rotate(this.rotation);
+        const flip = Math.cos(this.pitch);
+        eCtx.scale(1, flip);
+
+        eCtx.globalAlpha = Math.max(0.15, Math.abs(flip) * this.opacity);
+
+        eCtx.beginPath();
+        eCtx.moveTo(0, -this.size * 0.85);
+        eCtx.bezierCurveTo(this.size * 0.75, -this.size * 0.7, this.size * 0.9, this.size * 0.3, 0, this.size * 0.95);
+        eCtx.bezierCurveTo(-this.size * 0.9, this.size * 0.3, -this.size * 0.75, -this.size * 0.7, 0, -this.size * 0.85);
+        eCtx.closePath();
+
+        const grad = eCtx.createRadialGradient(0, -this.size * 0.2, 0, 0, 0, this.size);
+        if (this.colorType < 0.45) {
+          grad.addColorStop(0, 'rgba(255, 238, 235, 0.95)');
+          grad.addColorStop(0.5, 'rgba(247, 212, 210, 0.78)');
+          grad.addColorStop(1, 'rgba(232, 178, 175, 0.45)');
+        } else if (this.colorType < 0.8) {
+          grad.addColorStop(0, 'rgba(255, 253, 248, 0.95)');
+          grad.addColorStop(0.6, 'rgba(245, 236, 218, 0.8)');
+          grad.addColorStop(1, 'rgba(225, 206, 176, 0.4)');
+        } else {
+          grad.addColorStop(0, 'rgba(255, 248, 220, 0.9)');
+          grad.addColorStop(0.5, 'rgba(230, 201, 140, 0.7)');
+          grad.addColorStop(1, 'rgba(186, 149, 90, 0.35)');
+        }
+
+        eCtx.fillStyle = grad;
+        eCtx.fill();
+        eCtx.restore();
+      }
+    }
+
+    for (let i = 0; i < petalCount; i++) {
+      petals.push(new SubtlePetal());
+    }
+
+    function renderEnvelopePetals() {
+      eCtx.clearRect(0, 0, eWidth, eHeight);
+      for (let i = 0; i < petals.length; i++) {
+        petals[i].update();
+        petals[i].draw();
+      }
+      eAnimId = requestAnimationFrame(renderEnvelopePetals);
+    }
+
+    renderEnvelopePetals();
+
+    cancelEnvelopePetals = function() {
+      if (eAnimId) {
+        cancelAnimationFrame(eAnimId);
+        eAnimId = null;
+      }
+      if (eCtx && eWidth && eHeight) {
+        eCtx.clearRect(0, 0, eWidth, eHeight);
+      }
+    };
+  }
+
+  /* ==========================================================================
      3. Live Countdown Timer
      ========================================================================== */
   const daysEl = document.getElementById('days');
@@ -215,26 +329,48 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateCountdown, 1000);
 
   /* ==========================================================================
-     4. Initial Viewport Reveal & Ambient Music Start
+     4. Envelope Opening Intro (Animated Wax Seal Click)
      ========================================================================== */
-  // Reveal elements in initial viewport on page load
-  setTimeout(() => {
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) {
-        el.classList.add('active');
-      }
-    });
-  }, 100);
+  const openInviteBtn = document.getElementById('openInviteBtn');
+  const envelopeOverlay = document.getElementById('envelopeOverlay');
 
-  // Gentle audio start on first user interaction anywhere on the screen
-  const startMusicOnFirstInteraction = () => {
-    if (!isMusicPlaying) {
-      playWeddingMusic();
-    }
-  };
-  document.addEventListener('click', startMusicOnFirstInteraction, { once: true });
-  document.addEventListener('touchstart', startMusicOnFirstInteraction, { once: true, passive: true });
+  if (openInviteBtn && envelopeOverlay) {
+    openInviteBtn.addEventListener('click', () => {
+      // Trigger unsealing pop animation
+      openInviteBtn.classList.add('unsealing');
+
+      // Smoothly unveil after quick tactile stamp reaction
+      setTimeout(() => {
+        envelopeOverlay.classList.add('opened');
+        document.body.classList.remove('envelope-active');
+        document.body.style.overflow = 'auto';
+
+        // Start romantic ambient wedding music upon unsealing
+        playWeddingMusic();
+
+        // Reveal mobile action bar only after envelope is opened
+        const mobileNav = document.getElementById('mobileActionBar');
+        if (mobileNav) mobileNav.style.display = 'flex';
+
+        // Stop envelope petals animation loop once overlay is hidden
+        setTimeout(() => {
+          if (typeof cancelEnvelopePetals === 'function') {
+            cancelEnvelopePetals();
+          }
+        }, 1100);
+
+        // Trigger reveal on elements in viewport
+        setTimeout(() => {
+          document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+              el.classList.add('active');
+            }
+          });
+        }, 300);
+      }, 400);
+    });
+  }
 
   /* ==========================================================================
      5. Ambient Wedding Music Player (Vertical Left-Center Controller)

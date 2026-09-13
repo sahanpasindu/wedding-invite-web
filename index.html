@@ -23,10 +23,49 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css?v=20261105.16">
 </head>
-<body>
+<body class="envelope-active">
 
   <!-- Background Golden Sparkles & Stardust Canvas -->
   <canvas id="sparkleCanvas" class="sparkle-canvas"></canvas>
+
+  <!-- ========================================================================
+       1. Interactive Envelope & Wax Seal Intro
+       ======================================================================== -->
+  <div class="envelope-overlay" id="envelopeOverlay">
+    <!-- Subtle Falling Floral Petals & Blossom Flutter Canvas for Envelope -->
+    <canvas id="envelopePetalCanvas" class="envelope-petal-canvas"></canvas>
+
+    <div class="envelope-card">
+      <div class="envelope-sub">Wedding Invitation</div>
+      <h1 class="envelope-names">Anu &amp; Nirmal</h1>
+      <div class="envelope-date">November 5, 2026 &bull; Rathnapura</div>
+
+      <!-- Personalized Guest Dedication on Envelope -->
+      <div class="envelope-recipient-wrap" id="envelopeGuestCard">
+        <span class="envelope-recipient-sub">Specially Invited</span>
+        <h2 class="envelope-recipient-name" id="envelopeGuestName">Honoured Guests</h2>
+        <span class="envelope-recipient-scope" id="envelopeGuestScope">You &amp; Your Family</span>
+      </div>
+      
+      <!-- Wax Seal Interactive Button -->
+      <button type="button" class="wax-seal-btn" id="openInviteBtn" aria-label="Open Wedding Invitation">
+        <div class="wax-seal-inner">
+          <span class="wax-monogram">A &amp; N</span>
+          <span class="wax-text">Open</span>
+        </div>
+      </button>
+
+      <div class="envelope-prompt">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+          <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+          <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+          <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+        </svg>
+        <span>Tap wax seal to open</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        Floating Vertical Luxury Music Player (Left Center of Screen)
@@ -60,8 +99,8 @@
     <source src="assets/music.m4a" type="audio/mp4">
   </audio>
 
-  <!-- Sticky Bottom Navigation Bar -->
-  <nav class="mobile-action-bar" id="mobileActionBar" aria-label="Quick Actions">
+  <!-- Sticky Bottom Navigation Bar (Revealed after envelope opened) -->
+  <nav class="mobile-action-bar" id="mobileActionBar" aria-label="Quick Actions" style="display: none;">
     <a href="#scheduleSection" class="action-bar-item">
       <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span>Events</span>

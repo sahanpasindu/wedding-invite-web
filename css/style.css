@@ -197,6 +197,252 @@ button, input, select, textarea {
 }
 
 /* ==========================================================================
+   Envelope Opening Intro Modal (First Impression on Mobile & Desktop)
+   ========================================================================== */
+body.envelope-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+body.envelope-active .mobile-action-bar {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.envelope-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: radial-gradient(circle at center, #FAF7F0 0%, #E8DFCE 100%);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  overscroll-behavior: none;
+  touch-action: none;
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1), visibility 1s;
+}
+
+.envelope-overlay.opened {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Subtle Falling Petals & Blossom Canvas for Envelope */
+.envelope-petal-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.envelope-card {
+  width: 100%;
+  max-width: min(440px, calc(100vw - 32px));
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  padding: clamp(28px, 6vw, 42px) clamp(16px, 4vw, 26px);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 30px 70px -15px rgba(20, 19, 17, 0.25), 0 0 30px rgba(186, 149, 90, 0.2);
+  border: 1px solid var(--gold-border-bright);
+  background-image: var(--gradient-gold-subtle);
+  animation: floatSubtle 4.5s ease-in-out infinite;
+}
+
+.envelope-card::before {
+  content: "";
+  position: absolute;
+  top: 10px; left: 10px; right: 10px; bottom: 10px;
+  border: 1px solid rgba(20, 19, 17, 0.12);
+  border-radius: calc(var(--radius-md) - 4px);
+  pointer-events: none;
+}
+
+.envelope-sub {
+  font-family: var(--font-script);
+  font-size: clamp(1.9rem, 6vw, 2.3rem);
+  color: var(--gold-dull);
+  margin-top: 4px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.envelope-names {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: clamp(1.5px, 2vw, 3px);
+  color: var(--noir-black);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.envelope-date {
+  font-size: 0.82rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.envelope-recipient-wrap {
+  margin: 10px auto 20px;
+  padding: 12px clamp(12px, 3vw, 20px);
+  background: rgba(250, 246, 238, 0.96);
+  border: 1px dashed var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: min(330px, 100%);
+  box-sizing: border-box;
+  animation: envelopeGuestPulse 4s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.envelope-recipient-sub {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-dull);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.envelope-recipient-name {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #141311 0%, #8C6D38 30%, #E2C582 50%, #8C6D38 70%, #141311 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: guestNameShimmer 5s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(186, 149, 90, 0.25));
+  margin: 3px 0;
+}
+
+.envelope-recipient-scope {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--gold-deep);
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+@keyframes envelopeGuestPulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(20, 19, 17, 0.06), 0 0 0 1px rgba(186, 149, 90, 0.3);
+    border-color: rgba(186, 149, 90, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 24px rgba(186, 149, 90, 0.22), 0 0 0 1.5px rgba(212, 175, 55, 0.7);
+    border-color: rgba(212, 175, 55, 0.85);
+  }
+}
+
+/* Wax Seal Button (Black & Antique Dull Gold Luxury Seal) */
+.wax-seal-btn {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle at 35% 35%, #BA955A, #7D5F2F 65%, #1A1816 100%);
+  border-radius: 50%;
+  border: 2px solid #E8D3AB;
+  cursor: pointer;
+  box-shadow: 0 12px 28px -3px rgba(20, 19, 17, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s;
+  outline: none;
+}
+
+.wax-seal-btn:hover, .wax-seal-btn:focus-visible {
+  transform: scale(1.08);
+  box-shadow: 0 16px 34px -2px rgba(20, 19, 17, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+}
+
+.wax-seal-btn:active {
+  transform: scale(0.95);
+}
+
+.wax-seal-btn.unsealing {
+  animation: unsealPop 0.6s ease forwards;
+}
+
+@keyframes unsealPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18) rotate(-10deg); filter: brightness(1.3); }
+  100% { transform: scale(0) rotate(20deg); opacity: 0; }
+}
+
+.wax-seal-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+}
+
+.wax-monogram {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #FFFDF8;
+  text-shadow: 1px 1px 3px rgba(10, 10, 10, 0.8);
+  letter-spacing: 1px;
+}
+
+.wax-text {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #F8EED9;
+  margin-top: 2px;
+  opacity: 0.95;
+}
+
+.envelope-prompt {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--noir-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.envelope-prompt svg {
+  animation: pulseTouch 1.8s infinite;
+  stroke: var(--gold-dull);
+}
+
+/* ==========================================================================
    Main Wrapper
    ========================================================================== */
 .site-wrapper {
