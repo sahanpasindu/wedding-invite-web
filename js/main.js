@@ -69,34 +69,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
       reset(init = false) {
         this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : -25;
-        this.size = Math.random() * 5 + 3.2;
-        this.speedY = Math.random() * 0.75 + 0.4;
+        this.y = init ? Math.random() * height : -35;
+        
+        // Particle types: balloons/orbs, rose petals, and gold leaf
+        const randType = Math.random();
+        if (randType < 0.35) {
+          this.type = 'balloon';
+          this.size = window.innerWidth < 600 ? (Math.random() * 8 + 10) : (Math.random() * 12 + 13);
+        } else if (randType < 0.7) {
+          this.type = 'petal';
+          this.size = window.innerWidth < 600 ? (Math.random() * 7 + 9) : (Math.random() * 10 + 11);
+        } else {
+          this.type = 'gold';
+          this.size = window.innerWidth < 600 ? (Math.random() * 6 + 7) : (Math.random() * 8 + 8);
+        }
+
+        this.speedY = Math.random() * 0.7 + 0.4;
         this.speedX = (Math.random() - 0.5) * 0.45;
         
         // 3D rotation parameters
         this.rotation = Math.random() * Math.PI * 2;
-        this.rotSpeed = (Math.random() - 0.5) * 0.032;
+        this.rotSpeed = (Math.random() - 0.5) * 0.028;
         this.pitch = Math.random() * Math.PI;
-        this.pitchSpeed = Math.random() * 0.038 + 0.018;
+        this.pitchSpeed = Math.random() * 0.03 + 0.015;
 
         this.wobble = Math.random() * Math.PI * 2;
-        this.wobbleSpeed = Math.random() * 0.025 + 0.01;
-        this.opacity = Math.random() * 0.55 + 0.35;
-        this.type = Math.random() > 0.45 ? 'gold' : 'petal';
+        this.wobbleSpeed = Math.random() * 0.022 + 0.01;
+        this.opacity = Math.random() * 0.35 + 0.5;
       }
 
       update() {
         this.y += this.speedY;
         this.wobble += this.wobbleSpeed;
-        this.x += Math.sin(this.wobble) * 0.6 + this.speedX;
+        this.x += Math.sin(this.wobble) * 0.65 + this.speedX;
 
         // Subtle reaction to touch/mouse wind gust
         const dx = this.x - mouseX;
         const dy = this.y - mouseY;
         const dist = Math.hypot(dx, dy);
-        if (dist < 120) {
-          const force = (120 - dist) / 120;
+        if (dist < 130) {
+          const force = (130 - dist) / 130;
           this.x += (dx / (dist || 1)) * force * 3;
           this.y += (dy / (dist || 1)) * force * 1.5;
         }
@@ -104,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.rotation += this.rotSpeed;
         this.pitch += this.pitchSpeed;
 
-        if (this.y > height + 25) {
+        if (this.y > height + 35) {
           this.reset(false);
         }
       }
@@ -114,37 +126,56 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
         const flip = Math.cos(this.pitch);
-        ctx.scale(1, flip);
+        ctx.scale(1, this.type === 'balloon' ? 1 : flip);
 
-        if (this.type === 'gold') {
+        if (this.type === 'balloon') {
+          // Floating luminous celebration balloon / golden orb with 3D spherical depth
+          const ballGrad = ctx.createRadialGradient(-this.size * 0.32, -this.size * 0.35, 1, 0, 0, this.size);
+          ballGrad.addColorStop(0, 'rgba(255, 252, 240, 0.98)');
+          ballGrad.addColorStop(0.35, 'rgba(240, 218, 172, 0.9)');
+          ballGrad.addColorStop(0.75, 'rgba(198, 160, 98, 0.75)');
+          ballGrad.addColorStop(1, 'rgba(142, 106, 46, 0.45)');
+
+          ctx.fillStyle = ballGrad;
+          ctx.globalAlpha = this.opacity;
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Specular glossy reflection highlight
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+          ctx.beginPath();
+          ctx.ellipse(-this.size * 0.35, -this.size * 0.38, this.size * 0.28, this.size * 0.16, -Math.PI / 4, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 'gold') {
           // Shimmering metallic gold leaf flake
           const grad = ctx.createLinearGradient(-this.size, -this.size, this.size, this.size);
-          grad.addColorStop(0, '#FFE8B0');
-          grad.addColorStop(0.4, '#D4B680');
-          grad.addColorStop(0.8, '#BA955A');
+          grad.addColorStop(0, '#FFF0C8');
+          grad.addColorStop(0.35, '#E4C690');
+          grad.addColorStop(0.7, '#C89F5C');
           grad.addColorStop(1, '#8E6A2E');
 
           ctx.fillStyle = grad;
-          ctx.globalAlpha = Math.max(0.1, Math.abs(flip) * this.opacity);
+          ctx.globalAlpha = Math.max(0.18, Math.abs(flip) * this.opacity);
           ctx.beginPath();
           ctx.moveTo(0, -this.size * 0.9);
-          ctx.lineTo(this.size * 0.8, -this.size * 0.2);
-          ctx.lineTo(this.size * 0.5, this.size * 0.9);
+          ctx.lineTo(this.size * 0.85, -this.size * 0.25);
+          ctx.lineTo(this.size * 0.55, this.size * 0.9);
           ctx.lineTo(-this.size * 0.6, this.size * 0.7);
-          ctx.lineTo(-this.size * 0.8, -this.size * 0.4);
+          ctx.lineTo(-this.size * 0.85, -this.size * 0.4);
           ctx.closePath();
           ctx.fill();
         } else {
-          // Soft romantic champagne/ivory rose petal
+          // Romantic champagne / blush rose petal
           const petalGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, this.size * 1.3);
-          petalGrad.addColorStop(0, 'rgba(255, 252, 245, 0.9)');
-          petalGrad.addColorStop(0.6, 'rgba(240, 226, 206, 0.75)');
-          petalGrad.addColorStop(1, 'rgba(215, 185, 140, 0.5)');
+          petalGrad.addColorStop(0, 'rgba(255, 245, 238, 0.96)');
+          petalGrad.addColorStop(0.55, 'rgba(244, 222, 202, 0.85)');
+          petalGrad.addColorStop(1, 'rgba(215, 178, 142, 0.6)');
 
           ctx.fillStyle = petalGrad;
-          ctx.globalAlpha = Math.max(0.12, Math.abs(flip) * (this.opacity * 0.85));
+          ctx.globalAlpha = Math.max(0.2, Math.abs(flip) * this.opacity);
           ctx.beginPath();
-          ctx.ellipse(0, 0, this.size * 1.1, this.size * 0.65, Math.PI / 4, 0, Math.PI * 2);
+          ctx.ellipse(0, 0, this.size * 1.15, this.size * 0.72, Math.PI / 4, 0, Math.PI * 2);
           ctx.fill();
         }
 
@@ -189,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const eCtx = envelopePetalCanvas.getContext('2d');
     let eWidth, eHeight;
     let petals = [];
-    const petalCount = window.innerWidth < 600 ? 18 : 28;
+    const petalCount = window.innerWidth < 600 ? 26 : 38;
     let eAnimId = null;
 
     function resizeEnvelopePetals() {
@@ -206,28 +237,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
       reset(init = false) {
         this.x = Math.random() * eWidth;
-        this.y = init ? Math.random() * eHeight : -20;
-        this.size = Math.random() * 6 + 5;
-        this.speedY = Math.random() * 0.55 + 0.35;
-        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.y = init ? Math.random() * eHeight : -35;
+        
+        // 45% festive celebration balloons/orbs, 55% romantic blossom petals
+        this.type = Math.random() < 0.45 ? 'balloon' : 'petal';
+        if (this.type === 'balloon') {
+          this.size = window.innerWidth < 600 ? (Math.random() * 9 + 13) : (Math.random() * 13 + 16);
+        } else {
+          this.size = window.innerWidth < 600 ? (Math.random() * 8 + 12) : (Math.random() * 12 + 14);
+        }
+
+        this.speedY = Math.random() * 0.55 + 0.38;
+        this.speedX = (Math.random() - 0.5) * 0.35;
         this.wobble = Math.random() * Math.PI * 2;
         this.wobbleSpeed = Math.random() * 0.02 + 0.01;
         this.rotation = Math.random() * Math.PI * 2;
         this.rotSpeed = (Math.random() - 0.5) * 0.02;
         this.pitch = Math.random() * Math.PI;
         this.pitchSpeed = Math.random() * 0.025 + 0.01;
-        this.opacity = Math.random() * 0.45 + 0.35;
+        this.opacity = Math.random() * 0.35 + 0.55;
         this.colorType = Math.random();
       }
 
       update() {
         this.y += this.speedY;
         this.wobble += this.wobbleSpeed;
-        this.x += Math.sin(this.wobble) * 0.5 + this.speedX;
+        this.x += Math.sin(this.wobble) * 0.55 + this.speedX;
         this.rotation += this.rotSpeed;
         this.pitch += this.pitchSpeed;
 
-        if (this.y > eHeight + 20) {
+        if (this.y > eHeight + 35) {
           this.reset(false);
         }
       }
@@ -237,33 +276,70 @@ document.addEventListener('DOMContentLoaded', () => {
         eCtx.translate(this.x, this.y);
         eCtx.rotate(this.rotation);
         const flip = Math.cos(this.pitch);
-        eCtx.scale(1, flip);
+        eCtx.scale(1, this.type === 'balloon' ? 1 : flip);
 
-        eCtx.globalAlpha = Math.max(0.15, Math.abs(flip) * this.opacity);
+        eCtx.globalAlpha = Math.max(0.22, (this.type === 'balloon' ? 1 : Math.abs(flip)) * this.opacity);
 
-        eCtx.beginPath();
-        eCtx.moveTo(0, -this.size * 0.85);
-        eCtx.bezierCurveTo(this.size * 0.75, -this.size * 0.7, this.size * 0.9, this.size * 0.3, 0, this.size * 0.95);
-        eCtx.bezierCurveTo(-this.size * 0.9, this.size * 0.3, -this.size * 0.75, -this.size * 0.7, 0, -this.size * 0.85);
-        eCtx.closePath();
+        if (this.type === 'balloon') {
+          // Floating 3D celebration balloon / pearl orb
+          const ballGrad = eCtx.createRadialGradient(-this.size * 0.32, -this.size * 0.35, 1, 0, 0, this.size);
+          if (this.colorType < 0.4) {
+            // Champagne gold celebration balloon
+            ballGrad.addColorStop(0, 'rgba(255, 250, 238, 0.98)');
+            ballGrad.addColorStop(0.35, 'rgba(242, 218, 170, 0.9)');
+            ballGrad.addColorStop(0.75, 'rgba(202, 162, 98, 0.75)');
+            ballGrad.addColorStop(1, 'rgba(155, 118, 55, 0.45)');
+          } else if (this.colorType < 0.75) {
+            // Romantic rose gold balloon
+            ballGrad.addColorStop(0, 'rgba(255, 242, 244, 0.98)');
+            ballGrad.addColorStop(0.35, 'rgba(245, 206, 212, 0.9)');
+            ballGrad.addColorStop(0.75, 'rgba(216, 150, 162, 0.75)');
+            ballGrad.addColorStop(1, 'rgba(175, 102, 115, 0.45)');
+          } else {
+            // Luminous ivory pearl balloon
+            ballGrad.addColorStop(0, 'rgba(255, 255, 255, 0.98)');
+            ballGrad.addColorStop(0.4, 'rgba(247, 240, 226, 0.9)');
+            ballGrad.addColorStop(0.8, 'rgba(226, 210, 185, 0.7)');
+            ballGrad.addColorStop(1, 'rgba(195, 172, 140, 0.4)');
+          }
 
-        const grad = eCtx.createRadialGradient(0, -this.size * 0.2, 0, 0, 0, this.size);
-        if (this.colorType < 0.45) {
-          grad.addColorStop(0, 'rgba(255, 238, 235, 0.95)');
-          grad.addColorStop(0.5, 'rgba(247, 212, 210, 0.78)');
-          grad.addColorStop(1, 'rgba(232, 178, 175, 0.45)');
-        } else if (this.colorType < 0.8) {
-          grad.addColorStop(0, 'rgba(255, 253, 248, 0.95)');
-          grad.addColorStop(0.6, 'rgba(245, 236, 218, 0.8)');
-          grad.addColorStop(1, 'rgba(225, 206, 176, 0.4)');
+          eCtx.fillStyle = ballGrad;
+          eCtx.beginPath();
+          eCtx.arc(0, 0, this.size, 0, Math.PI * 2);
+          eCtx.fill();
+
+          // Specular balloon highlight reflection
+          eCtx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+          eCtx.beginPath();
+          eCtx.ellipse(-this.size * 0.35, -this.size * 0.38, this.size * 0.28, this.size * 0.16, -Math.PI / 4, 0, Math.PI * 2);
+          eCtx.fill();
         } else {
-          grad.addColorStop(0, 'rgba(255, 248, 220, 0.9)');
-          grad.addColorStop(0.5, 'rgba(230, 201, 140, 0.7)');
-          grad.addColorStop(1, 'rgba(186, 149, 90, 0.35)');
+          // Romantic full-bodied blossom petal
+          eCtx.beginPath();
+          eCtx.moveTo(0, -this.size * 0.9);
+          eCtx.bezierCurveTo(this.size * 0.8, -this.size * 0.7, this.size * 0.95, this.size * 0.3, 0, this.size);
+          eCtx.bezierCurveTo(-this.size * 0.95, this.size * 0.3, -this.size * 0.8, -this.size * 0.7, 0, -this.size * 0.9);
+          eCtx.closePath();
+
+          const grad = eCtx.createRadialGradient(0, -this.size * 0.2, 0, 0, 0, this.size);
+          if (this.colorType < 0.45) {
+            grad.addColorStop(0, 'rgba(255, 238, 235, 0.98)');
+            grad.addColorStop(0.5, 'rgba(247, 210, 208, 0.88)');
+            grad.addColorStop(1, 'rgba(230, 168, 165, 0.6)');
+          } else if (this.colorType < 0.8) {
+            grad.addColorStop(0, 'rgba(255, 253, 248, 0.98)');
+            grad.addColorStop(0.55, 'rgba(245, 234, 212, 0.88)');
+            grad.addColorStop(1, 'rgba(222, 198, 160, 0.55)');
+          } else {
+            grad.addColorStop(0, 'rgba(255, 248, 225, 0.98)');
+            grad.addColorStop(0.5, 'rgba(235, 204, 138, 0.85)');
+            grad.addColorStop(1, 'rgba(195, 155, 88, 0.5)');
+          }
+
+          eCtx.fillStyle = grad;
+          eCtx.fill();
         }
 
-        eCtx.fillStyle = grad;
-        eCtx.fill();
         eCtx.restore();
       }
     }
