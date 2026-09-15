@@ -2430,6 +2430,59 @@ body.envelope-active .mobile-action-bar {
   transform: scale(1.2);
 }
 
+.footer-credit {
+  margin-top: 14px;
+  font-size: 0.72rem;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.footer-heart {
+  color: #C94A58;
+  display: inline-block;
+  font-size: 0.82rem;
+  line-height: 1;
+  animation: heartBeat 2.2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.25);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.18);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.footer-credit-link {
+  color: var(--gold-deep);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(140, 109, 56, 0.4);
+  transition: all 0.25s ease;
+  padding-bottom: 1px;
+}
+
+.footer-credit-link:hover,
+.footer-credit-link:focus-visible {
+  color: var(--gold-primary);
+  border-bottom: 1px solid var(--gold-primary);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.35);
+}
+
 /* ==========================================================================
    Keyframes & Animations
    ========================================================================== */
