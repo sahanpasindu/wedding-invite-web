@@ -409,6 +409,13 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   const openInviteBtn = document.getElementById('openInviteBtn');
   const envelopeOverlay = document.getElementById('envelopeOverlay');
+  const envelopePrompt = document.querySelector('.envelope-prompt');
+
+  if (envelopePrompt && openInviteBtn) {
+    envelopePrompt.addEventListener('click', () => {
+      openInviteBtn.click();
+    });
+  }
 
   if (openInviteBtn && envelopeOverlay) {
     openInviteBtn.addEventListener('click', () => {

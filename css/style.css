@@ -250,6 +250,9 @@ body.envelope-active .mobile-action-bar {
 }
 
 .envelope-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: min(440px, calc(100vw - 32px));
   margin: 0 auto;
@@ -362,12 +365,14 @@ body.envelope-active .mobile-action-bar {
 /* Wax Seal Button with Beckoning Pulse & Golden Radiance */
 .wax-seal-btn {
   position: relative;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 96px;
   height: 96px;
+  margin: 0 auto;
+  flex-shrink: 0;
   background: radial-gradient(circle at 35% 35%, #D4B680 0%, #8E6A2E 55%, #1D1A16 100%);
   border-radius: 50%;
   border: 2px solid #F3E4C6;
@@ -525,12 +530,21 @@ body.envelope-active .mobile-action-bar {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 6px 16px;
-  background: rgba(255, 255, 255, 0.7);
+  padding: 7px 18px;
+  background: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(186, 149, 90, 0.35);
   border-radius: 30px;
   box-shadow: 0 4px 14px rgba(20, 19, 17, 0.06);
   animation: promptPulse 2.2s ease-in-out infinite;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.envelope-prompt:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(186, 149, 90, 0.65);
+  box-shadow: 0 6px 18px rgba(186, 149, 90, 0.2);
 }
 
 @keyframes promptPulse {

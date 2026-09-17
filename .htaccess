@@ -1,0 +1,14 @@
+﻿# Prevent stale browser caching for HTML, CSS, and JS
+<IfModule mod_headers.c>
+    # Ensure HTML is never served stale so updates take effect immediately
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # Force browsers to revalidate CSS and JS assets with server
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
