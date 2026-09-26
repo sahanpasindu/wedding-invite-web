@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getCleanBaseUrl() {
     // The live hosted website domain
-    const LIVE_HOSTED_URL = 'http://anu-nirmal.site.je/';
+    const LIVE_HOSTED_URL = 'https://anu-nirmal.vercel.app/';
 
     // When opened directly as local file (file:///) or on local development (localhost / 127.0.0.1),
     // always generate links pointing to the live hosted domain so shared links work immediately for guests!
