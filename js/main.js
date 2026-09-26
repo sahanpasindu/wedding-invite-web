@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
-    const count = window.innerWidth < 600 ? 32 : 55;
+    // Greatly reduced particle count to keep detail page clean and elegant
+    const count = window.innerWidth < 600 ? 10 : 16;
 
     let mouseX = -1000;
     let mouseY = -1000;
@@ -71,17 +72,20 @@ document.addEventListener('DOMContentLoaded', () => {
         this.x = Math.random() * width;
         this.y = init ? Math.random() * height : -35;
         
-        // Particle types: balloons/orbs, rose petals, and gold leaf
+        // Greatly reduced balloons (only ~10%), mostly soft petals and subtle gold leaf
         const randType = Math.random();
-        if (randType < 0.35) {
+        if (randType < 0.10) {
           this.type = 'balloon';
-          this.size = window.innerWidth < 600 ? (Math.random() * 8 + 10) : (Math.random() * 12 + 13);
-        } else if (randType < 0.7) {
+          this.size = window.innerWidth < 600 ? (Math.random() * 4 + 6) : (Math.random() * 5 + 7);
+          this.opacity = Math.random() * 0.18 + 0.25;
+        } else if (randType < 0.60) {
           this.type = 'petal';
-          this.size = window.innerWidth < 600 ? (Math.random() * 7 + 9) : (Math.random() * 10 + 11);
+          this.size = window.innerWidth < 600 ? (Math.random() * 5 + 6) : (Math.random() * 7 + 8);
+          this.opacity = Math.random() * 0.2 + 0.3;
         } else {
           this.type = 'gold';
-          this.size = window.innerWidth < 600 ? (Math.random() * 6 + 7) : (Math.random() * 8 + 8);
+          this.size = window.innerWidth < 600 ? (Math.random() * 4 + 4) : (Math.random() * 5 + 5);
+          this.opacity = Math.random() * 0.2 + 0.3;
         }
 
         this.speedY = Math.random() * 0.7 + 0.4;
@@ -220,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const eCtx = envelopePetalCanvas.getContext('2d');
     let eWidth, eHeight;
     let petals = [];
-    const petalCount = window.innerWidth < 600 ? 26 : 38;
+    const petalCount = window.innerWidth < 600 ? 18 : 26;
     let eAnimId = null;
 
     function resizeEnvelopePetals() {
@@ -239,12 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
         this.x = Math.random() * eWidth;
         this.y = init ? Math.random() * eHeight : -35;
         
-        // 45% festive celebration balloons/orbs, 55% romantic blossom petals
-        this.type = Math.random() < 0.45 ? 'balloon' : 'petal';
+        // 20% festive celebration balloons/orbs, 80% romantic blossom petals
+        this.type = Math.random() < 0.20 ? 'balloon' : 'petal';
         if (this.type === 'balloon') {
-          this.size = window.innerWidth < 600 ? (Math.random() * 9 + 13) : (Math.random() * 13 + 16);
+          this.size = window.innerWidth < 600 ? (Math.random() * 6 + 9) : (Math.random() * 8 + 12);
         } else {
-          this.size = window.innerWidth < 600 ? (Math.random() * 8 + 12) : (Math.random() * 12 + 14);
+          this.size = window.innerWidth < 600 ? (Math.random() * 7 + 10) : (Math.random() * 10 + 12);
         }
 
         this.speedY = Math.random() * 0.55 + 0.38;
