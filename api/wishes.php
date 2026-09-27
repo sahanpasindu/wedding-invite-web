@@ -78,6 +78,37 @@ if ($method === 'POST') {
         exit;
     }
 
+    if ($action === 'update' || $action === 'edit') {
+        $id = $data['id'] ?? '';
+        $author = trim($data['author'] ?? '');
+        $text = trim($data['text'] ?? '');
+
+        if (empty($id) || empty($author) || empty($text)) {
+            echo json_encode(['status' => 'error', 'message' => 'ID, author name, and message text are required']);
+            exit;
+        }
+
+        $found = false;
+        foreach ($wishes as &$w) {
+            if (($w['id'] ?? '') === $id) {
+                $w['author'] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
+                $w['text'] = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+                $w['updatedAt'] = date('c');
+                $found = true;
+                break;
+            }
+        }
+        unset($w);
+
+        if ($found) {
+            saveWishes($dataFile, $wishes);
+            echo json_encode(['status' => 'success', 'message' => 'Wish updated successfully']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Wish not found']);
+        }
+        exit;
+    }
+
     if ($action === 'delete') {
         $id = $data['id'] ?? '';
         if (empty($id)) {

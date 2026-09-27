@@ -855,6 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (portalLockedCard) portalLockedCard.style.display = 'none';
         if (portalGeneratorCard) portalGeneratorCard.style.display = 'block';
         updateGeneratedLink();
+        renderPortalWishes();
       } else {
         if (portalLockedCard) portalLockedCard.style.display = 'block';
         if (portalGeneratorCard) portalGeneratorCard.style.display = 'none';
@@ -866,6 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderWishes();
+    renderPortalWishes();
   }
 
   // Handle Passcode Unlock Form submission (Passcode: 2026)
@@ -880,6 +882,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (portalLockedCard) portalLockedCard.style.display = 'none';
         if (portalGeneratorCard) portalGeneratorCard.style.display = 'block';
         updateGeneratedLink();
+        renderPortalWishes();
+        renderWishes();
 
         if (genGuestNameInput) {
           setTimeout(() => {
@@ -922,31 +926,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Note: initPageGating() is called at the end of DOMContentLoaded once all handlers are registered.
 
   /* ==========================================================================
-     9. Wishes Guestbook & File-Based Storage (Zero Database Required)
+     9. Wishes Guestbook & File-Based Storage (Full Couple Management)
      ========================================================================== */
   const wishForm = document.getElementById('wishForm');
   const wishesContainer = document.getElementById('wishesContainer');
 
-  const defaultWishes = [
-    {
-      id: 'wish_1',
-      author: 'Uncle Sunimal & Family',
-      time: 'Nov 2026',
-      text: 'Warmest congratulations to dearest Anu and Nirmal! Counting down the days to celebrate at Hotel Grand Guardian.'
-    },
-    {
-      id: 'wish_2',
-      author: 'Chathura & Kaveesha',
-      time: 'Nov 2026',
-      text: 'May your journey together be blessed with endless happiness, love, and laughter. See you on Nov 5th!'
-    },
-    {
-      id: 'wish_3',
-      author: 'Dilani Perera',
-      time: 'Nov 2026',
-      text: 'Such an elegant couple! Wishing you both a lifetime of togetherness and joy.'
-    }
-  ];
+  // Dummy wishes removed - guestbook starts 100% clean
+  const defaultWishes = [];
 
   let currentWishes = [];
 
@@ -956,15 +942,21 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
+  // Check if couple workspace is unlocked in this session
+  function isCoupleUnlocked() {
+    return sessionStorage.getItem('anu_nirmal_portal_unlocked') === 'true';
+  }
+
   async function loadWishes() {
     try {
       const res = await fetch('api/wishes.php', { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
-        if (data && data.status === 'success' && Array.isArray(data.wishes) && data.wishes.length > 0) {
-          currentWishes = data.wishes;
+        if (data && data.status === 'success' && Array.isArray(data.wishes)) {
+          currentWishes = data.wishes.filter(w => w && !['wish_1', 'wish_2', 'wish_3'].includes(w.id));
           localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
           renderWishes();
+          renderPortalWishes();
           return;
         }
       }
@@ -973,32 +965,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      currentWishes = JSON.parse(localStorage.getItem('anu_nirmal_wishes') || '[]');
+      const stored = JSON.parse(localStorage.getItem('anu_nirmal_wishes') || '[]');
+      // Filter out any legacy dummy wish IDs from previous tests
+      currentWishes = Array.isArray(stored) ? stored.filter(w => w && !['wish_1', 'wish_2', 'wish_3'].includes(w.id)) : [];
+      localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
     } catch (e) {
       currentWishes = [];
     }
-    if (currentWishes.length === 0) {
-      currentWishes = defaultWishes;
-    }
+
     renderWishes();
+    renderPortalWishes();
   }
 
+  // --- Public Guestbook Renderer ---
   function renderWishes() {
     if (!wishesContainer) return;
     wishesContainer.innerHTML = '';
 
     if (currentWishes.length === 0) {
-      wishesContainer.innerHTML = '<div style="text-align:center; padding: 22px; color: var(--text-muted); font-size: 0.88rem;">No wishes added yet. Be the first to bless the couple!</div>';
+      wishesContainer.innerHTML = '<div style="text-align:center; padding: 26px 16px; color: var(--text-muted); font-size: 0.88rem;">No wishes added yet. Be the first to bless the couple!</div>';
       return;
     }
+
+    const coupleAuthorized = isCoupleUnlocked();
 
     currentWishes.forEach(item => {
       const div = document.createElement('div');
       div.className = 'wish-item';
       div.id = `wish-${item.id}`;
 
-      const deleteBtnHtml = isCoupleMode
-        ? `<button type="button" class="btn-delete-wish" data-id="${escapeHtml(item.id)}" title="Delete this wish">✕ Remove</button>`
+      const coupleControlsHtml = coupleAuthorized
+        ? `<div class="wish-couple-actions">
+             <button type="button" class="btn-edit-wish" data-id="${escapeHtml(item.id)}" title="Edit wish">✎ Edit</button>
+             <button type="button" class="btn-delete-wish" data-id="${escapeHtml(item.id)}" title="Delete wish">✕ Remove</button>
+           </div>`
         : '';
 
       div.innerHTML = `
@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="wish-author">${escapeHtml(item.author)}</span>
           <div class="wish-right-meta">
             <span class="wish-time">${escapeHtml(item.time || '')}</span>
-            ${deleteBtnHtml}
+            ${coupleControlsHtml}
           </div>
         </div>
         <div class="wish-text">“${escapeHtml(item.text)}”</div>
@@ -1014,49 +1014,208 @@ document.addEventListener('DOMContentLoaded', () => {
       wishesContainer.appendChild(div);
     });
 
-    // Bind wish delete handlers when in couple mode
-    if (isCoupleMode) {
-      document.querySelectorAll('.btn-delete-wish').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
+    // Bind edit/delete handlers in public view when couple is authorized
+    if (coupleAuthorized) {
+      wishesContainer.querySelectorAll('.btn-edit-wish').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const wishId = btn.getAttribute('data-id');
+          const wishItem = currentWishes.find(w => w.id === wishId);
+          if (!wishItem) return;
+
+          const newAuthor = prompt('Edit Guest / Author Name:', wishItem.author);
+          if (newAuthor === null) return;
+          const newText = prompt('Edit Blessing Message:', wishItem.text);
+          if (newText === null) return;
+
+          if (!newAuthor.trim() || !newText.trim()) {
+            alert('Name and message cannot be empty.');
+            return;
+          }
+
+          updateWish(wishId, newAuthor.trim(), newText.trim());
+        });
+      });
+
+      wishesContainer.querySelectorAll('.btn-delete-wish').forEach(btn => {
+        btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const wishId = btn.getAttribute('data-id');
           const wishItem = currentWishes.find(w => w.id === wishId);
           const authorName = wishItem ? wishItem.author : 'this guest';
 
-          if (!confirm(`Are you sure you want to remove the wish from "${authorName}"?`)) {
-            return;
-          }
-
-          // Try deleting via server JSON file
-          try {
-            await fetch('api/wishes.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ action: 'delete', id: wishId })
-            });
-          } catch (err) {
-            console.warn('API delete offline, removing from local store');
-          }
-
-          currentWishes = currentWishes.filter(w => w.id !== wishId);
-          localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
-
-          const el = document.getElementById(`wish-${wishId}`);
-          if (el) {
-            el.style.transition = 'all 0.3s ease';
-            el.style.opacity = '0';
-            el.style.transform = 'scale(0.92)';
-            setTimeout(() => {
-              renderWishes();
-            }, 280);
-          } else {
-            renderWishes();
+          if (confirm(`Are you sure you want to remove the blessing from "${authorName}"?`)) {
+            deleteWish(wishId);
           }
         });
       });
     }
   }
 
+  // --- Couple Portal Wishes Management Renderer ---
+  function renderPortalWishes() {
+    const portalWishesCountBadge = document.getElementById('portalWishesCountBadge');
+    const portalWishesList = document.getElementById('portalWishesList');
+
+    if (portalWishesCountBadge) {
+      portalWishesCountBadge.textContent = currentWishes.length;
+    }
+
+    if (!portalWishesList) return;
+    portalWishesList.innerHTML = '';
+
+    if (currentWishes.length === 0) {
+      portalWishesList.innerHTML = `
+        <div class="portal-empty-wishes">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="margin: 0 auto 8px; display: block; opacity: 0.5;">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <strong>No wishes received yet.</strong><br>
+          <span style="font-size: 0.78rem;">When guests submit blessings on your website, they will appear here. You can also use the "+ Add Blessing" button above to add one manually.</span>
+        </div>
+      `;
+      return;
+    }
+
+    currentWishes.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'portal-wish-item';
+      card.id = `portal-wish-${item.id}`;
+
+      card.innerHTML = `
+        <div class="portal-wish-top">
+          <div class="portal-wish-author-info">
+            <span class="portal-wish-author-name">${escapeHtml(item.author)}</span>
+            <span class="portal-wish-time">${escapeHtml(item.time || 'Guest blessing')}</span>
+          </div>
+          <div class="portal-wish-actions">
+            <button type="button" class="portal-action-btn portal-btn-edit-action" data-id="${escapeHtml(item.id)}" title="Edit Blessing">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              <span>Edit</span>
+            </button>
+            <button type="button" class="portal-action-btn btn-delete portal-btn-delete-action" data-id="${escapeHtml(item.id)}" title="Delete Blessing">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+        <div class="portal-wish-body">“${escapeHtml(item.text)}”</div>
+      `;
+
+      portalWishesList.appendChild(card);
+    });
+
+    // Bind Edit in Portal
+    portalWishesList.querySelectorAll('.portal-btn-edit-action').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const wish = currentWishes.find(w => w.id === id);
+        if (!wish) return;
+
+        const portalEditWishCard = document.getElementById('portalEditWishCard');
+        const portalAddWishCard = document.getElementById('portalAddWishCard');
+        const portalEditWishId = document.getElementById('portalEditWishId');
+        const portalEditAuthor = document.getElementById('portalEditAuthor');
+        const portalEditText = document.getElementById('portalEditText');
+
+        if (portalAddWishCard) portalAddWishCard.style.display = 'none';
+
+        if (portalEditWishCard && portalEditWishId && portalEditAuthor && portalEditText) {
+          portalEditWishId.value = wish.id;
+          portalEditAuthor.value = wish.author;
+          portalEditText.value = wish.text;
+          portalEditWishCard.style.display = 'block';
+          portalEditWishCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          portalEditAuthor.focus();
+        }
+      });
+    });
+
+    // Bind Delete in Portal
+    portalWishesList.querySelectorAll('.portal-btn-delete-action').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const wish = currentWishes.find(w => w.id === id);
+        const name = wish ? wish.author : 'this guest';
+
+        if (confirm(`Are you sure you want to permanently delete the blessing from "${name}"?`)) {
+          deleteWish(id);
+        }
+      });
+    });
+  }
+
+  // --- CRUD Operations for Wishes ---
+  async function addWish(author, text) {
+    let newWish = {
+      id: 'wish_' + Date.now(),
+      author: author,
+      text: text,
+      time: 'Just now'
+    };
+
+    try {
+      const res = await fetch('api/wishes.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', author, text })
+      });
+      const data = await res.json();
+      if (data && data.status === 'success' && data.wish) {
+        newWish = data.wish;
+      }
+    } catch (err) {
+      console.warn('API offline, saving wish locally');
+    }
+
+    currentWishes.unshift(newWish);
+    localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
+    renderWishes();
+    renderPortalWishes();
+    return newWish;
+  }
+
+  async function updateWish(id, newAuthor, newText) {
+    const wish = currentWishes.find(w => w.id === id);
+    if (!wish) return;
+
+    wish.author = newAuthor;
+    wish.text = newText;
+    wish.time = 'Updated just now';
+
+    localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
+    renderWishes();
+    renderPortalWishes();
+
+    try {
+      await fetch('api/wishes.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update', id, author: newAuthor, text: newText })
+      });
+    } catch (err) {
+      console.warn('API offline, wish updated in local store');
+    }
+  }
+
+  async function deleteWish(id) {
+    currentWishes = currentWishes.filter(w => w.id !== id);
+    localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
+    renderWishes();
+    renderPortalWishes();
+
+    try {
+      await fetch('api/wishes.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id })
+      });
+    } catch (err) {
+      console.warn('API offline, wish removed from local store');
+    }
+  }
+
+  // --- Public Wish Form Submission ---
   if (wishForm) {
     wishForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1068,32 +1227,112 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      let newWish = {
-        id: 'wish_' + Date.now(),
-        author: author,
-        text: text,
-        time: 'Just now'
-      };
-
-      try {
-        const res = await fetch('api/wishes.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'add', author, text })
-        });
-        const data = await res.json();
-        if (data && data.status === 'success' && data.wish) {
-          newWish = data.wish;
-        }
-      } catch (err) {
-        console.warn('API offline, saving locally:', err);
-      }
-
-      currentWishes.unshift(newWish);
-      localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
-      renderWishes();
+      await addWish(author, text);
       wishForm.reset();
       alert('Thank you for your heartfelt blessing!');
+    });
+  }
+
+  // --- Portal Tab & Wish Management Wiring ---
+  const btnTabLinks = document.getElementById('btnTabLinks');
+  const btnTabWishes = document.getElementById('btnTabWishes');
+  const panelPortalLinks = document.getElementById('panelPortalLinks');
+  const panelPortalWishes = document.getElementById('panelPortalWishes');
+  const portalCardHeading = document.getElementById('portalCardHeading');
+
+  if (btnTabLinks && btnTabWishes) {
+    btnTabLinks.addEventListener('click', () => {
+      btnTabLinks.classList.add('active');
+      btnTabWishes.classList.remove('active');
+      if (panelPortalLinks) panelPortalLinks.style.display = 'block';
+      if (panelPortalWishes) panelPortalWishes.style.display = 'none';
+      if (portalCardHeading) portalCardHeading.textContent = 'Guest Link Creator';
+    });
+
+    btnTabWishes.addEventListener('click', () => {
+      btnTabWishes.classList.add('active');
+      btnTabLinks.classList.remove('active');
+      if (panelPortalLinks) panelPortalLinks.style.display = 'none';
+      if (panelPortalWishes) panelPortalWishes.style.display = 'block';
+      if (portalCardHeading) portalCardHeading.textContent = 'Guestbook & Wishes Manager';
+      renderPortalWishes();
+    });
+  }
+
+  // Portal Add Wish Toggle & Handlers
+  const btnToggleAddWish = document.getElementById('btnToggleAddWish');
+  const portalAddWishCard = document.getElementById('portalAddWishCard');
+  const btnCancelAddWish = document.getElementById('btnCancelAddWish');
+  const btnSaveNewWish = document.getElementById('btnSaveNewWish');
+  const portalNewAuthor = document.getElementById('portalNewAuthor');
+  const portalNewText = document.getElementById('portalNewText');
+
+  if (btnToggleAddWish && portalAddWishCard) {
+    btnToggleAddWish.addEventListener('click', () => {
+      const isHidden = portalAddWishCard.style.display === 'none' || !portalAddWishCard.style.display;
+      portalAddWishCard.style.display = isHidden ? 'block' : 'none';
+      const portalEditWishCard = document.getElementById('portalEditWishCard');
+      if (portalEditWishCard) portalEditWishCard.style.display = 'none';
+      if (isHidden && portalNewAuthor) {
+        portalNewAuthor.focus();
+      }
+    });
+  }
+
+  if (btnCancelAddWish && portalAddWishCard) {
+    btnCancelAddWish.addEventListener('click', () => {
+      portalAddWishCard.style.display = 'none';
+      if (portalNewAuthor) portalNewAuthor.value = '';
+      if (portalNewText) portalNewText.value = '';
+    });
+  }
+
+  if (btnSaveNewWish) {
+    btnSaveNewWish.addEventListener('click', async () => {
+      const author = portalNewAuthor ? portalNewAuthor.value.trim() : '';
+      const text = portalNewText ? portalNewText.value.trim() : '';
+
+      if (!author || !text) {
+        alert('Please enter both the guest name and blessing message.');
+        return;
+      }
+
+      await addWish(author, text);
+      if (portalNewAuthor) portalNewAuthor.value = '';
+      if (portalNewText) portalNewText.value = '';
+      if (portalAddWishCard) portalAddWishCard.style.display = 'none';
+      alert('✓ Blessing added to guestbook!');
+    });
+  }
+
+  // Portal Edit Wish Cancel & Save Handlers
+  const portalEditWishCard = document.getElementById('portalEditWishCard');
+  const btnCancelEditWish = document.getElementById('btnCancelEditWish');
+  const btnSaveEditWish = document.getElementById('btnSaveEditWish');
+  const portalEditWishId = document.getElementById('portalEditWishId');
+  const portalEditAuthor = document.getElementById('portalEditAuthor');
+  const portalEditText = document.getElementById('portalEditText');
+
+  if (btnCancelEditWish && portalEditWishCard) {
+    btnCancelEditWish.addEventListener('click', () => {
+      portalEditWishCard.style.display = 'none';
+    });
+  }
+
+  if (btnSaveEditWish) {
+    btnSaveEditWish.addEventListener('click', async () => {
+      const id = portalEditWishId ? portalEditWishId.value : '';
+      const author = portalEditAuthor ? portalEditAuthor.value.trim() : '';
+      const text = portalEditText ? portalEditText.value.trim() : '';
+
+      if (!id || !author || !text) {
+        alert('Name and message cannot be empty.');
+        return;
+      }
+
+      await updateWish(id, author, text);
+      if (portalEditWishCard) portalEditWishCard.style.display = 'none';
+      alert('✓ Blessing updated successfully!');
     });
   }
 

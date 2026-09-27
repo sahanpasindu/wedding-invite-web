@@ -2061,6 +2061,220 @@ body.envelope-active .mobile-action-bar {
   border-color: var(--noir-black);
 }
 
+/* ==========================================================================
+   Portal Workspace Tabs & Wishes Management
+   ========================================================================== */
+.portal-tabs-bar {
+  display: flex;
+  gap: 8px;
+  background: rgba(20, 19, 17, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 5px;
+  margin-bottom: 22px;
+  border: 1px solid var(--gold-border);
+}
+
+.portal-tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: calc(var(--radius-sm) - 2px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.portal-tab-btn:hover {
+  color: var(--noir-black);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.portal-tab-btn.active {
+  background: #FFFFFF;
+  color: var(--noir-black);
+  box-shadow: 0 2px 8px rgba(20, 19, 17, 0.09);
+  border: 1px solid var(--gold-border-bright);
+}
+
+.portal-tab-badge {
+  background: var(--gold-deep);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.portal-tab-panel {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+/* Portal Wishes Management */
+.portal-wishes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.portal-section-heading {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--noir-black);
+  margin-bottom: 3px;
+}
+
+.portal-section-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.portal-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.76rem;
+  border-radius: 8px;
+}
+
+.portal-add-wish-card,
+.portal-edit-wish-card {
+  background: rgba(186, 149, 90, 0.08);
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  animation: fadeIn 0.25s ease;
+  box-shadow: 0 4px 14px rgba(186, 149, 90, 0.12);
+}
+
+.portal-add-wish-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--noir-black);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portal-add-wish-title svg {
+  stroke: var(--gold-deep);
+}
+
+.portal-wishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.portal-wish-item {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 15px 16px;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(20, 19, 17, 0.04);
+  transition: all 0.2s ease;
+}
+
+.portal-wish-item:hover {
+  border-color: var(--gold-border-bright);
+  box-shadow: 0 4px 12px rgba(186, 149, 90, 0.15);
+}
+
+.portal-wish-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.portal-wish-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-wish-author-name {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--noir-black);
+}
+
+.portal-wish-time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.portal-wish-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.portal-action-btn {
+  background: rgba(20, 19, 17, 0.05);
+  border: 1px solid rgba(20, 19, 17, 0.12);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--noir-black);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.portal-action-btn:hover {
+  background: var(--gold-deep);
+  color: #FFFFFF;
+  border-color: var(--gold-deep);
+}
+
+.portal-action-btn.btn-delete:hover {
+  background: #DC2626;
+  border-color: #DC2626;
+  color: #FFFFFF;
+}
+
+.portal-wish-body {
+  font-size: 0.86rem;
+  color: var(--text-body);
+  line-height: 1.55;
+  background: var(--bg-card-subtle);
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 3px solid var(--gold-deep);
+}
+
+.portal-empty-wishes {
+  text-align: center;
+  padding: 34px 16px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  background: var(--bg-card-subtle);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--gold-border);
+}
+
 /* Couple Tool Section Visibility */
 .guest-view-mode .couple-portal-wrapper {
   display: none !important;
@@ -2373,6 +2587,26 @@ body.envelope-active .mobile-action-bar {
 }
 
 /* Discreet Wish Deletion Button (Visible ONLY in Couple Mode) */
+.btn-edit-wish {
+  background: rgba(186, 149, 90, 0.15);
+  color: var(--gold-deep);
+  border: 1px solid var(--gold-border-bright);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 4px;
+}
+
+.btn-edit-wish:hover {
+  background: var(--gold-deep);
+  color: #FFFFFF;
+  border-color: var(--gold-deep);
+  transform: scale(1.05);
+}
+
 .btn-delete-wish {
   background: rgba(220, 38, 38, 0.12);
   color: #DC2626;
