@@ -15,7 +15,7 @@ Designed with a bespoke **White, Dull Gold, and Noir Black** palette with editor
 - **Add to Calendar**:
   - Direct 1-Click Google Calendar event generator.
   - Downloadable Apple iCal & Outlook (`.ics`) file.
-- **Celebration Itinerary / Schedule**: Poruwa ceremony, welcome refreshments, grand entrance, banquet feast, and cake cutting.
+- **Celebration Itinerary / Schedule**: Welcome arrival, morning tea table, Poruwa ceremony, banquet lunch, and Mangala Sabhawa.
 - **Venue Guide**: Direct Google Maps link and one-tap copy address for Hotel Grand Guardian, Ratnapura.
 - **Dress Code Guide**: Swatches and guidance for formal celebration attire.
 - **Dual-Delivery RSVP**:
