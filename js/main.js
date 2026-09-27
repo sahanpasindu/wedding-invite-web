@@ -4,8 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Target Wedding Date: November 5, 2026, 09:30:00 (Sri Lanka Time GMT+5:30)
-  const weddingDate = new Date('2026-11-05T09:30:00+05:30').getTime();
+  // Target Wedding Date: November 5, 2026, 08:30:00 (Sri Lanka Time GMT+5:30)
+  const weddingDate = new Date('2026-11-05T08:30:00+05:30').getTime();
 
   /* ==========================================================================
      1. Scroll Reveal Animations (IntersectionObserver)
@@ -538,10 +538,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const eventDetails = {
     title: 'Wedding of Anu & Nirmal',
-    start: '20261105T040000Z', // 09:30 SLT in UTC
-    end: '20261105T100000Z',   // 15:30 SLT in UTC
+    start: '20261105T030000Z', // 08:30 AM SLT in UTC
+    end: '20261105T103000Z',   // 04:00 PM (16:00) SLT in UTC
     location: 'Hotel Grand Guardian, Ratnapura, Sri Lanka',
-    description: 'We joyfully invite you to celebrate our wedding day. Hotel Grand Guardian, Ratnapura. Anu & Nirmal.'
+    description: 'We joyfully invite you to celebrate our wedding day (08:30 AM – 04:00 PM) at Hotel Grand Guardian, Ratnapura. Anu & Nirmal.'
   };
 
   if (btnAddToGoogle) {
