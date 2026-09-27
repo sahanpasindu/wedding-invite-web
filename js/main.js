@@ -586,6 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const rawGuestName = urlParams.get('to') || urlParams.get('name') || urlParams.get('guest');
   const rawScope = urlParams.get('invite') || urlParams.get('with') || '';
+  const rawTable = urlParams.get('table') || urlParams.get('seat') || '';
 
   function getScopeLabel(scopeKey) {
     const key = (scopeKey || '').toLowerCase().trim();
@@ -602,6 +603,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const envelopeGuestScope = document.getElementById('envelopeGuestScope');
   const heroGuestName = document.getElementById('heroGuestName');
   const heroGuestScope = document.getElementById('heroGuestScope');
+  const envelopeTableBadge = document.getElementById('envelopeTableBadge');
+  const envelopeTableText = document.getElementById('envelopeTableText');
+  const heroTableBadge = document.getElementById('heroTableBadge');
+  const heroTableText = document.getElementById('heroTableText');
+  const venueTableBox = document.getElementById('venueTableBox');
+  const venueTableText = document.getElementById('venueTableText');
 
   if (rawGuestName) {
     const cleanName = rawGuestName.trim();
@@ -613,11 +620,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroGuestScope) heroGuestScope.textContent = scopeText;
   }
 
+  // Optional Table Seating (shown only if table parameter is present)
+  if (rawTable && rawTable.trim()) {
+    const cleanTable = rawTable.trim();
+    if (envelopeTableText) envelopeTableText.textContent = cleanTable;
+    if (envelopeTableBadge) envelopeTableBadge.style.display = 'inline-flex';
+    if (heroTableText) heroTableText.textContent = cleanTable;
+    if (heroTableBadge) heroTableBadge.style.display = 'inline-flex';
+    if (venueTableText) venueTableText.textContent = cleanTable;
+    if (venueTableBox) venueTableBox.style.display = 'block';
+  } else {
+    if (envelopeTableBadge) envelopeTableBadge.style.display = 'none';
+    if (heroTableBadge) heroTableBadge.style.display = 'none';
+    if (venueTableBox) venueTableBox.style.display = 'none';
+  }
+
   /* ==========================================================================
      8A. Couple Tool: Personalized Guest Link Generator Logic
      ========================================================================== */
   const genGuestNameInput = document.getElementById('genGuestName');
   const genInviteScopeSelect = document.getElementById('genInviteScope');
+  const genTableNumberInput = document.getElementById('genTableNumber');
+  const tableChipBtns = document.querySelectorAll('.table-chip-btn');
   const genLinkInput = document.getElementById('genLinkInput');
   const copySuccessNote = document.getElementById('copySuccessNote');
   const btnCopyGeneratedLink = document.getElementById('btnCopyGeneratedLink');
@@ -640,10 +664,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${origin}${cleanPath}/`;
   }
 
-  function generateInvitationMessage(guestName, scopeText, linkUrl) {
+  function generateInvitationMessage(guestName, scopeText, linkUrl, tableText) {
+    const tableLine = tableText ? `🪑 *Reserved Seating:* ${tableText}\n\n` : '';
     return `💍 *Wedding Invitation: Anu & Nirmal*\n\n` +
            `Dear ${guestName},\n` +
            `We joyfully invite *${scopeText}* to celebrate our wedding union on Thursday, November 5, 2026 at Hotel Grand Guardian, Ratnapura.\n\n` +
+           tableLine +
            `Kindly open your personalized wedding invitation card here:\n${linkUrl}\n\n` +
            `With warm love,\n` +
            `Anu & Nirmal`;
@@ -654,11 +680,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = genGuestNameInput ? genGuestNameInput.value.trim() : '';
     const scope = genInviteScopeSelect ? genInviteScopeSelect.value : 'family';
     const scopeText = genInviteScopeSelect ? genInviteScopeSelect.options[genInviteScopeSelect.selectedIndex].text : 'You & Your Family';
+    const tableVal = genTableNumberInput ? genTableNumberInput.value.trim() : '';
     const baseUrl = getCleanBaseUrl();
 
     // If no name entered, generate a clear live template preview
     const effectiveName = name || 'Uncle Bandara & Family';
-    const fullUrl = `${baseUrl}?to=${encodeURIComponent(effectiveName)}&invite=${encodeURIComponent(scope)}`;
+    let fullUrl = `${baseUrl}?to=${encodeURIComponent(effectiveName)}&invite=${encodeURIComponent(scope)}`;
+    if (tableVal) {
+      fullUrl += `&table=${encodeURIComponent(tableVal)}`;
+    }
 
     genLinkInput.value = fullUrl;
 
@@ -668,9 +698,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update WhatsApp link immediately so clicking it works natively
     if (btnShareWhatsAppGuest) {
-      const msg = generateInvitationMessage(name || effectiveName, scopeText, fullUrl);
+      const msg = generateInvitationMessage(name || effectiveName, scopeText, fullUrl, tableVal);
       const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
       btnShareWhatsAppGuest.setAttribute('href', waUrl);
+    }
+
+    // Sync active state on quick-select chips
+    if (tableChipBtns && tableChipBtns.length) {
+      tableChipBtns.forEach((btn) => {
+        const btnVal = btn.getAttribute('data-table') || '';
+        if (btnVal && tableVal.toLowerCase() === btnVal.toLowerCase()) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
     }
 
     return fullUrl;
@@ -762,6 +804,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (genInviteScopeSelect) {
     genInviteScopeSelect.addEventListener('change', updateGeneratedLink);
+  }
+  if (genTableNumberInput) {
+    genTableNumberInput.addEventListener('input', updateGeneratedLink);
+    genTableNumberInput.addEventListener('change', updateGeneratedLink);
+    genTableNumberInput.addEventListener('keyup', updateGeneratedLink);
+  }
+  if (tableChipBtns && tableChipBtns.length) {
+    tableChipBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tableVal = btn.getAttribute('data-table') || '';
+        if (genTableNumberInput) {
+          genTableNumberInput.value = tableVal;
+          updateGeneratedLink();
+          genTableNumberInput.focus();
+        }
+      });
+    });
   }
 
   // Clicking on the readonly input selects all text for easy manual copy if desired

@@ -351,6 +351,28 @@ body.envelope-active .mobile-action-bar {
   margin-top: 3px;
 }
 
+.envelope-table-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 7px;
+  background: rgba(186, 149, 90, 0.12);
+  border: 1px solid var(--gold-border-bright);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--noir-black);
+  text-transform: uppercase;
+}
+
+.envelope-table-badge svg {
+  color: var(--gold-deep);
+  flex-shrink: 0;
+}
+
 @keyframes envelopeGuestPulse {
   0%, 100% {
     box-shadow: 0 4px 14px rgba(20, 19, 17, 0.06), 0 0 0 1px rgba(186, 149, 90, 0.3);
@@ -796,6 +818,34 @@ body.envelope-active .mobile-action-bar {
   font-weight: 600;
   border-bottom: 1px dotted var(--gold-dull);
   padding-bottom: 1px;
+}
+
+.guest-table-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(186, 149, 90, 0.18) 100%);
+  border: 1px solid var(--gold-border-bright);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  color: var(--noir-black);
+  box-shadow: 0 2px 8px rgba(186, 149, 90, 0.15);
+}
+
+.guest-table-badge svg {
+  color: var(--gold-deep);
+  flex-shrink: 0;
+}
+
+.guest-table-badge strong {
+  color: var(--noir-black);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 @keyframes guestNameShimmer {
@@ -1573,6 +1623,26 @@ body.envelope-active .mobile-action-bar {
 .venue-detail-box span {
   font-size: 0.84rem;
   color: var(--text-body);
+}
+
+.venue-detail-box.venue-table-box {
+  background: linear-gradient(135deg, rgba(250, 246, 238, 0.98) 0%, rgba(244, 237, 222, 0.98) 100%);
+  border: 1.5px solid var(--gold-border-bright);
+  box-shadow: 0 4px 14px rgba(186, 149, 90, 0.14);
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.venue-detail-box.venue-table-box strong {
+  color: var(--gold-deep);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.venue-detail-box.venue-table-box span {
+  color: var(--noir-black);
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .venue-actions {
@@ -2473,6 +2543,57 @@ body.envelope-active .mobile-action-bar {
   border-radius: 6px;
   font-weight: 500;
   animation: fadeIn 0.25s ease-in-out;
+}
+
+.quick-table-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chips-label {
+  font-size: 0.70rem;
+  color: var(--text-muted);
+  margin-right: 2px;
+}
+
+.table-chip-btn {
+  background: rgba(20, 19, 17, 0.05);
+  border: 1px solid rgba(20, 19, 17, 0.12);
+  border-radius: 14px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--noir-black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.table-chip-btn:hover {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+  color: #FFFFFF;
+}
+
+.table-chip-btn.active {
+  background: var(--noir-black);
+  border-color: var(--noir-black);
+  color: #FFFFFF;
+}
+
+.table-chip-btn.chip-clear {
+  color: #DC2626;
+  border-color: rgba(220, 38, 38, 0.25);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+.table-chip-btn.chip-clear:hover {
+  background: #DC2626;
+  border-color: #DC2626;
+  color: #FFFFFF;
 }
 
 .link-gen-actions {

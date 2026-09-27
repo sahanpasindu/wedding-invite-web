@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105.21">
+  <link rel="stylesheet" href="css/style.css?v=20261105.22">
 </head>
 <body class="envelope-active">
 
@@ -65,6 +65,10 @@
         <span class="envelope-recipient-sub">✦ To Our Dearest ✦</span>
         <h2 class="envelope-recipient-name" id="envelopeGuestName">Honoured Guests</h2>
         <span class="envelope-recipient-scope" id="envelopeGuestScope">You &amp; Your Family</span>
+        <div class="envelope-table-badge" id="envelopeTableBadge" style="display: none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18v3M20 18v3M4 11h16M4 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M4 11v7h16v-7"/></svg>
+          <span id="envelopeTableText">Table 05</span>
+        </div>
       </div>
       
       <!-- Wax Seal Interactive Button with Beckoning Animation -->
@@ -239,6 +243,25 @@
             </select>
           </div>
 
+          <div class="form-group" style="text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+              <label class="form-label" for="genTableNumber" style="margin-bottom: 0;">Table Seating (Optional)</label>
+              <span style="font-size: 0.68rem; color: var(--gold-deep); font-style: italic;">Only for confirmed guests</span>
+            </div>
+            <input type="text" id="genTableNumber" class="form-input" placeholder="Leave empty for unassigned, or e.g. Table 05, VIP 1" autocomplete="off">
+            <div class="quick-table-chips">
+              <span class="chips-label">Quick select:</span>
+              <button type="button" class="table-chip-btn" data-table="Table 01">01</button>
+              <button type="button" class="table-chip-btn" data-table="Table 02">02</button>
+              <button type="button" class="table-chip-btn" data-table="Table 03">03</button>
+              <button type="button" class="table-chip-btn" data-table="Table 04">04</button>
+              <button type="button" class="table-chip-btn" data-table="Table 05">05</button>
+              <button type="button" class="table-chip-btn" data-table="Table 06">06</button>
+              <button type="button" class="table-chip-btn" data-table="VIP Table">VIP</button>
+              <button type="button" class="table-chip-btn chip-clear" data-table="">✕ Clear</button>
+            </div>
+          </div>
+
           <div class="link-gen-output-box" style="text-align: left;">
             <label class="form-label" for="genLinkInput" style="margin-bottom: 6px; font-size: 0.74rem; color: var(--gold-deep); display: flex; justify-content: space-between; align-items: center;">
               <span>Generated Guest Link</span>
@@ -359,6 +382,10 @@
           <p class="personal-invite-desc">
             We joyfully invite <strong id="heroGuestScope">You &amp; Your Family</strong> to share in our wedding celebration.
           </p>
+          <div class="guest-table-badge" id="heroTableBadge" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18v3M20 18v3M4 11h16M4 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M4 11v7h16v-7"/></svg>
+            <span>Reserved Seating: <strong id="heroTableText">Table 05</strong></span>
+          </div>
         </div>
 
         <div class="invitation-intro">Together with their families</div>
@@ -630,6 +657,10 @@
               <strong>Atmosphere</strong>
               <span>Luxury banquet dining &amp; mountain garden views</span>
             </div>
+            <div class="venue-detail-box venue-table-box" id="venueTableBox" style="display: none;">
+              <strong>Your Reserved Table</strong>
+              <span id="venueTableText">Table 05</span>
+            </div>
           </div>
 
           <div class="venue-actions">
@@ -775,6 +806,6 @@
   </div>
 
   <!-- Script -->
-  <script src="js/main.js?v=20261105.21"></script>
+  <script src="js/main.js?v=20261105.22"></script>
 </body>
 </html>
