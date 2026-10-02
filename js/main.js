@@ -1177,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPortalWishes();
   }
 
-  // --- Public Guestbook Renderer ---
+  // --- Public Guestbook Renderer (Strictly Read-Only Presentation) ---
   function renderWishes() {
     if (!wishesContainer) return;
     wishesContainer.innerHTML = '';
@@ -1187,69 +1187,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const coupleAuthorized = isCoupleUnlocked();
-
     currentWishes.forEach(item => {
       const div = document.createElement('div');
       div.className = 'wish-item';
       div.id = `wish-${item.id}`;
-
-      const coupleControlsHtml = coupleAuthorized
-        ? `<div class="wish-couple-actions">
-             <button type="button" class="btn-edit-wish" data-id="${escapeHtml(item.id)}" title="Edit wish">✎ Edit</button>
-             <button type="button" class="btn-delete-wish" data-id="${escapeHtml(item.id)}" title="Delete wish">✕ Remove</button>
-           </div>`
-        : '';
 
       div.innerHTML = `
         <div class="wish-meta">
           <span class="wish-author">${escapeHtml(item.author)}</span>
           <div class="wish-right-meta">
             <span class="wish-time">${escapeHtml(item.time || '')}</span>
-            ${coupleControlsHtml}
           </div>
         </div>
         <div class="wish-text">“${escapeHtml(item.text)}”</div>
       `;
       wishesContainer.appendChild(div);
     });
-
-    // Bind edit/delete handlers in public view when couple is authorized
-    if (coupleAuthorized) {
-      wishesContainer.querySelectorAll('.btn-edit-wish').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const wishId = btn.getAttribute('data-id');
-          const wishItem = currentWishes.find(w => w.id === wishId);
-          if (!wishItem) return;
-
-          const newAuthor = prompt('Edit Guest / Author Name:', wishItem.author);
-          if (newAuthor === null) return;
-          const newText = prompt('Edit Blessing Message:', wishItem.text);
-          if (newText === null) return;
-
-          if (!newAuthor.trim() || !newText.trim()) {
-            alert('Name and message cannot be empty.');
-            return;
-          }
-
-          updateWish(wishId, newAuthor.trim(), newText.trim());
-        });
-      });
-
-      wishesContainer.querySelectorAll('.btn-delete-wish').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const wishId = btn.getAttribute('data-id');
-          const wishItem = currentWishes.find(w => w.id === wishId);
-          const authorName = wishItem ? wishItem.author : 'this guest';
-
-          if (confirm(`Are you sure you want to remove the blessing from "${authorName}"?`)) {
-            deleteWish(wishId);
-          }
-        });
-      });
-    }
   }
 
   // --- Couple Portal Wishes Management Renderer ---
