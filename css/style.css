@@ -2606,9 +2606,6 @@ body.envelope-active .mobile-action-bar {
   .link-gen-actions {
     grid-template-columns: 1fr 1fr;
   }
-  .link-gen-actions #btnPreviewGeneratedLink {
-    grid-column: span 2;
-  }
 }
 
 .btn-whatsapp {

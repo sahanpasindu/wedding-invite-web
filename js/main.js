@@ -644,6 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableChipBtns = document.querySelectorAll('.table-chip-btn');
   const genLinkInput = document.getElementById('genLinkInput');
   const copySuccessNote = document.getElementById('copySuccessNote');
+  const btnCopyInviteMessage = document.getElementById('btnCopyInviteMessage');
   const btnCopyGeneratedLink = document.getElementById('btnCopyGeneratedLink');
   const btnShareWhatsAppGuest = document.getElementById('btnShareWhatsAppGuest');
   const btnPreviewGeneratedLink = document.getElementById('btnPreviewGeneratedLink');
@@ -665,14 +666,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function generateInvitationMessage(guestName, scopeText, linkUrl, tableText) {
-    const tableLine = tableText ? `🪑 *Reserved Seating:* ${tableText}\n\n` : '';
-    return `💍 *Wedding Invitation: Anu & Nirmal*\n\n` +
-           `Dear ${guestName},\n` +
-           `We joyfully invite *${scopeText}* to celebrate our wedding union on Thursday, November 5, 2026 at Hotel Grand Guardian, Ratnapura.\n\n` +
-           tableLine +
-           `Kindly open your personalized wedding invitation card here:\n${linkUrl}\n\n` +
-           `With warm love,\n` +
-           `Anu & Nirmal`;
+    const tableLine = tableText ? `\n\n🪑 *Reserved Seating:* ${tableText}` : '';
+    return `🌸 💍 *Anu & Nirmal are getting married!* 💍 🌸\n\n` +
+           `Dear *${guestName}*,\n\n` +
+           `Because you have shared in our lives and brought us joy, we warmly invite *${scopeText}* to celebrate our wedding day with us.\n\n` +
+           `📅 *Date:* Thursday, November 5, 2026\n\n` +
+           `📍 *Venue:* Hotel Grand Guardian, Ratnapura` +
+           tableLine + `\n\n` +
+           `✨ *Tap the link below to view your personalized invitation:*\n\n` +
+           `${linkUrl}\n\n` +
+           `We look forward to celebrating this special day with you! 💕`;
   }
 
   function updateGeneratedLink() {
@@ -796,6 +799,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Copy full formatted invitation message handler
+  async function handleCopyInviteMessage(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    const name = genGuestNameInput ? genGuestNameInput.value.trim() : '';
+    if (!name) {
+      alert('Please enter a guest name first.');
+      if (genGuestNameInput) genGuestNameInput.focus();
+      return;
+    }
+
+    const fullUrl = updateGeneratedLink();
+    const scopeText = genInviteScopeSelect ? genInviteScopeSelect.options[genInviteScopeSelect.selectedIndex].text : 'You & Your Family';
+    const tableVal = genTableNumberInput ? genTableNumberInput.value.trim() : '';
+    const fullMsg = generateInvitationMessage(name, scopeText, fullUrl, tableVal);
+
+    let copied = false;
+
+    // Method 1: Modern clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(fullMsg);
+        copied = true;
+      } catch (err) {
+        console.warn('Clipboard API error:', err);
+      }
+    }
+
+    // Method 2: Fallback textarea
+    if (!copied) {
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = fullMsg;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0.01';
+        temp.style.left = '10px';
+        temp.style.top = '10px';
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        temp.setSelectionRange(0, 99999);
+        copied = document.execCommand('copy');
+        document.body.removeChild(temp);
+      } catch (err) {
+        console.warn('Fallback copy failed:', err);
+      }
+    }
+
+    // UI Feedback
+    if (copySuccessNote) {
+      copySuccessNote.textContent = '✓ Full invitation message copied! Ready to paste anywhere.';
+      copySuccessNote.style.display = 'block';
+      setTimeout(() => {
+        copySuccessNote.style.display = 'none';
+        copySuccessNote.textContent = '✓ Link copied to clipboard! You can paste and send it anywhere.';
+      }, 3500);
+    }
+
+    if (btnCopyInviteMessage) {
+      const origHtml = btnCopyInviteMessage.innerHTML;
+      btnCopyInviteMessage.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Message Copied!</span>';
+      setTimeout(() => {
+        btnCopyInviteMessage.innerHTML = origHtml;
+      }, 2500);
+    }
+  }
+
   // Bind live updates
   if (genGuestNameInput) {
     genGuestNameInput.addEventListener('input', updateGeneratedLink);
@@ -829,6 +903,10 @@ document.addEventListener('DOMContentLoaded', () => {
       genLinkInput.select();
       genLinkInput.setSelectionRange(0, 99999);
     });
+  }
+
+  if (btnCopyInviteMessage) {
+    btnCopyInviteMessage.addEventListener('click', handleCopyInviteMessage);
   }
 
   if (btnCopyGeneratedLink) {
