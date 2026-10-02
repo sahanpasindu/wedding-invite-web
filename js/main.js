@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
         }, 300);
-      }, 420);
+      }, 320);
     });
   }
 

@@ -481,25 +481,110 @@ body.envelope-active .mobile-action-bar {
 }
 
 /* ==========================================================================
-   Square Luxury Wax Seal Button ("PLEASE OPEN")
+   Refined Luxury Rectangular "PLEASE OPEN" Button
    ========================================================================== */
-.wax-seal-btn-square {
-  border-radius: 20px !important;
-  width: 96px !important;
-  height: 96px !important;
-  margin: 6px auto 0 !important;
-  box-shadow: 0 16px 36px -4px rgba(20, 19, 17, 0.52), 0 0 28px rgba(212, 182, 128, 0.45), inset 0 2px 5px rgba(255, 255, 255, 0.5), inset 0 -3px 8px rgba(0, 0, 0, 0.65) !important;
+.intro-rect-open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 24px;
+  margin: 6px auto 3px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #181715 0%, #26211A 50%, #181715 100%);
+  border: 1.5px solid var(--gold-border-bright);
+  box-shadow: 0 4px 16px rgba(20, 19, 17, 0.2), 0 0 12px rgba(186, 149, 90, 0.15);
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  user-select: none;
 }
 
-.wax-seal-btn-square .seal-halo-ring {
-  border-radius: 26px !important;
-  inset: -7px !important;
+.intro-rect-open-btn::before {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px; right: 2px; bottom: 2px;
+  border: 1px dashed rgba(226, 197, 130, 0.35);
+  border-radius: 5px;
+  pointer-events: none;
 }
 
-.wax-seal-btn-square .wax-seal-inner {
-  border-radius: 14px !important;
-  width: 80px !important;
-  height: 80px !important;
+.intro-rect-open-btn:hover {
+  transform: translateY(-2px);
+  border-color: #E2C582;
+  box-shadow: 0 6px 20px rgba(186, 149, 90, 0.35), 0 0 16px rgba(226, 197, 130, 0.25);
+}
+
+.intro-rect-open-btn:active {
+  transform: scale(0.98);
+}
+
+/* Subtle, gentle unsealing transition — NO harsh or exaggerated popping */
+.intro-rect-open-btn.unsealing {
+  transform: scale(0.97);
+  opacity: 0.8;
+  filter: brightness(1.2);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.intro-rect-open-btn .rect-btn-star {
+  font-size: 0.65rem;
+  color: #FFE6A3;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 2px rgba(255, 230, 163, 0.8));
+  animation: starTwinkle 2s ease-in-out infinite alternate;
+}
+
+.intro-rect-open-btn .rect-please-text {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #F7EFE0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  margin-top: 1px;
+}
+
+.intro-rect-open-btn .rect-open-text {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(105deg, #E6C875 0%, #FFFFFF 28%, #FFE9B3 55%, #E6C875 75%, #FFFFFF 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+  animation: goldShimmerSweep 2.8s linear infinite;
+}
+
+/* Minimalist Touch Hint */
+.intro-rect-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 2px;
+  font-size: 0.68rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.intro-rect-hint:hover {
+  color: var(--gold-deep);
+}
+
+.intro-rect-hint svg {
+  color: var(--gold-deep);
 }
 
 .envelope-card {
