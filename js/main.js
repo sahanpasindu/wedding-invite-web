@@ -409,41 +409,30 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateCountdown, 1000);
 
   /* ==========================================================================
-     4. Envelope Opening Intro (Animated Wax Seal Click)
+     4. Invitation Card & Envelope Opening Intro (Square / Round Wax Seal Click)
      ========================================================================== */
   const openInviteBtn = document.getElementById('openInviteBtn');
   const envelopeOverlay = document.getElementById('envelopeOverlay');
-  const envelopePrompt = document.querySelector('.envelope-prompt');
+  const cardOpenPrompt = document.getElementById('cardOpenPrompt');
 
-  if (envelopePrompt && openInviteBtn) {
-    envelopePrompt.addEventListener('click', () => {
+  if (cardOpenPrompt && openInviteBtn) {
+    cardOpenPrompt.addEventListener('click', () => {
       openInviteBtn.click();
     });
   }
 
   if (openInviteBtn && envelopeOverlay) {
-    const lampPillText = document.getElementById('lampPillText');
-    const introTouchHint = document.querySelector('.intro-touch-hint');
-
-    if (introTouchHint) {
-      introTouchHint.addEventListener('click', () => openInviteBtn.click());
-    }
-
     openInviteBtn.addEventListener('click', () => {
-      // Trigger ceremonial lamp lighting animation
-      openInviteBtn.classList.add('lamp-lit');
+      // Trigger unsealing pop animation
       openInviteBtn.classList.add('unsealing');
-      if (lampPillText) {
-        lampPillText.textContent = '✨ මංගල පහන දැල්විණි ✨';
-      }
 
-      // Smoothly unveil after auspicious lamp flame blooms
+      // Smoothly unveil after tactile wax seal pop
       setTimeout(() => {
         envelopeOverlay.classList.add('opened');
         document.body.classList.remove('envelope-active');
         document.body.style.overflow = 'auto';
 
-        // Start romantic ambient wedding music upon lamp lighting
+        // Start romantic ambient wedding music
         playWeddingMusic();
 
         // Reveal mobile action bar only after card is opened
@@ -466,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
         }, 300);
-      }, 650);
+      }, 420);
     });
   }
 
