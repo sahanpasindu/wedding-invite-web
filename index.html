@@ -36,13 +36,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/rings.svg">
 
-  <!-- Google Fonts: Original Luxury Royal Serif & Script Suite -->
+  <!-- Google Fonts: Original Luxury Royal Serif, Script & Sinhala Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20261105.23">
+  <link rel="stylesheet" href="css/style.css?v=20261105.24">
 </head>
 <body class="envelope-active">
 
@@ -50,19 +50,47 @@
   <canvas id="sparkleCanvas" class="sparkle-canvas"></canvas>
 
   <!-- ========================================================================
-       1. Interactive Envelope & Wax Seal Intro
+       1. Sri Lankan Sinhala Royal Wedding Invitation Card Intro
        ======================================================================== -->
-  <div class="envelope-overlay" id="envelopeOverlay">
-    <!-- Subtle Falling Floral Petals & Blossom Flutter Canvas for Envelope -->
+  <div class="envelope-overlay card-mode-active" id="envelopeOverlay">
+    <!-- Subtle Falling Floral Petals & Blossom Flutter Canvas -->
     <canvas id="envelopePetalCanvas" class="envelope-petal-canvas"></canvas>
 
-    <div class="envelope-card">
-      <div class="envelope-sub">Wedding Invitation</div>
-      <h1 class="envelope-names">Anu &amp; Nirmal</h1>
+    <!-- Traditional Sri Lankan Sinhala Royal Wedding Card -->
+    <div class="intro-wedding-card" id="introWeddingCard">
+      <!-- Luxury Ornate Corner Flourishes -->
+      <img src="assets/corner.svg" class="card-corner top-left" alt="" aria-hidden="true">
+      <img src="assets/corner.svg" class="card-corner top-right" alt="" aria-hidden="true">
+      <img src="assets/corner.svg" class="card-corner bottom-left" alt="" aria-hidden="true">
+      <img src="assets/corner.svg" class="card-corner bottom-right" alt="" aria-hidden="true">
 
-      <!-- Personalized Guest Dedication on Envelope -->
-      <div class="envelope-recipient-wrap" id="envelopeGuestCard">
-        <span class="envelope-recipient-sub">✦ To Our Dearest ✦</span>
+      <!-- Auspicious Sinhala Traditional Blessing & Greeting -->
+      <div class="intro-blessing-wrap">
+        <span class="intro-blessing-sinhala">|| සිරි සුබ මංගලම් ||</span>
+        <span class="intro-blessing-sub">Together with our families</span>
+      </div>
+
+      <!-- Couple Names in Royal Script / Gold Shimmer -->
+      <h1 class="intro-couple-names">
+        <span class="c-name">Anu</span>
+        <span class="c-amp">&amp;</span>
+        <span class="c-name">Nirmal</span>
+      </h1>
+
+      <p class="intro-request-text">
+        request the honour of your presence to celebrate their wedding union
+      </p>
+
+      <!-- Auspicious Wedding Date -->
+      <div class="intro-wedding-date">
+        <span class="date-sep">&bull;</span>
+        <span class="date-val">05 &bull; 11 &bull; 2026</span>
+        <span class="date-sep">&bull;</span>
+      </div>
+
+      <!-- Personalized Guest Dedication Card -->
+      <div class="envelope-recipient-wrap intro-guest-box" id="envelopeGuestCard">
+        <span class="envelope-recipient-sub">✦ Especially For ✦</span>
         <h2 class="envelope-recipient-name" id="envelopeGuestName">Honoured Guests</h2>
         <span class="envelope-recipient-scope" id="envelopeGuestScope">You &amp; Your Family</span>
         <div class="envelope-table-badge" id="envelopeTableBadge" style="display: none;">
@@ -70,9 +98,94 @@
           <span id="envelopeTableText">Table 05</span>
         </div>
       </div>
+
+      <!-- Adorable 3D Chibi Couple (Nirmal in Kandyan Nilame Kit, Anu in Kandyan Bridal Osari) -->
+      <div class="intro-chibi-container">
+        <div class="intro-chibi-pair">
+          <picture>
+            <source srcset="img/chibi-couple.webp" type="image/webp">
+            <img src="img/chibi-couple.png" alt="Anu &amp; Nirmal in Traditional Sri Lankan Attire" class="intro-chibi-img" width="180" height="180" loading="eager">
+          </picture>
+          <div class="intro-chibi-shadow"></div>
+          <span class="intro-floating-heart h1" aria-hidden="true">&hearts;</span>
+          <span class="intro-floating-heart h2" aria-hidden="true">&hearts;</span>
+          <span class="intro-floating-sparkle" aria-hidden="true">&#10022;</span>
+        </div>
+      </div>
+
+      <!-- Ceremonial Sri Lankan Brass Oil Lamp (මඟුල් පහන) Interaction -->
+      <button type="button" class="intro-lamp-btn" id="openInviteBtn" aria-label="Tap to Light the Auspicious Lamp and Open Invitation">
+        <div class="lamp-visual-wrap">
+          <!-- Radiant Warm Golden Ambient Halo -->
+          <div class="lamp-radiant-glow" id="lampGlow"></div>
+          <!-- Sacred Flickering Golden Flame -->
+          <div class="lamp-flame-wrap" id="lampFlame">
+            <span class="flame-outer"></span>
+            <span class="flame-inner"></span>
+          </div>
+          <!-- Handcrafted Sri Lankan Brass Oil Lamp (Pahana) SVG -->
+          <svg class="lamp-brass-svg" viewBox="0 0 110 54" width="110" height="54" aria-hidden="true">
+            <defs>
+              <linearGradient id="pahanGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#9C772F"/>
+                <stop offset="25%" stop-color="#E5C77A"/>
+                <stop offset="50%" stop-color="#FFF3C4"/>
+                <stop offset="75%" stop-color="#D4A74C"/>
+                <stop offset="100%" stop-color="#7D5716"/>
+              </linearGradient>
+              <linearGradient id="pahanRim" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FFF5CE"/>
+                <stop offset="100%" stop-color="#B88A34"/>
+              </linearGradient>
+            </defs>
+            <!-- Brass Bowl Body -->
+            <path d="M 18 20 C 18 38, 35 44, 55 44 C 75 44, 92 38, 92 20 Z" fill="url(#pahanGold)"/>
+            <!-- Engraved Decorative Arimbuwa line -->
+            <path d="M 28 26 Q 55 34 82 26" fill="none" stroke="rgba(255, 245, 206, 0.65)" stroke-width="0.9" stroke-dasharray="2,3"/>
+            <!-- Ornate Beaded Rim -->
+            <ellipse cx="55" cy="20" rx="38" ry="4.5" fill="url(#pahanRim)" stroke="#7D5716" stroke-width="0.8"/>
+            <ellipse cx="55" cy="20" rx="34" ry="3.2" fill="#5E3E0C" opacity="0.85"/>
+            <!-- Center Wick Point -->
+            <ellipse cx="55" cy="19.5" rx="3" ry="1.2" fill="#FFF7DA"/>
+            <!-- Sculpted Pedestal Base -->
+            <path d="M 48 44 L 48 48 L 40 52 L 70 52 L 62 48 L 62 44 Z" fill="url(#pahanGold)" stroke="#7D5716" stroke-width="0.5"/>
+          </svg>
+        </div>
+
+        <!-- Auspicious Action Pill -->
+        <div class="lamp-touch-pill">
+          <span class="lamp-pill-star" aria-hidden="true">&#10022;</span>
+          <span class="lamp-pill-text" id="lampPillText">මංගල පහන දල්වන්න &bull; Open</span>
+          <span class="lamp-pill-star" aria-hidden="true">&#10022;</span>
+        </div>
+      </button>
+
+      <div class="intro-touch-hint">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        <span>Tap auspicious oil lamp to open</span>
+      </div>
+    </div>
+
+    <!-- Classic Wax Seal Envelope (Fully preserved for 1-click easy revert or ?style=envelope testing) -->
+    <div class="envelope-card" id="envelopeClassicCard" style="display: none;">
+      <div class="envelope-sub">Wedding Invitation</div>
+      <h1 class="envelope-names">Anu &amp; Nirmal</h1>
+
+      <!-- Personalized Guest Dedication on Envelope -->
+      <div class="envelope-recipient-wrap" id="envelopeClassicGuestCard">
+        <span class="envelope-recipient-sub">✦ To Our Dearest ✦</span>
+        <h2 class="envelope-recipient-name" id="envelopeClassicGuestName">Honoured Guests</h2>
+        <span class="envelope-recipient-scope" id="envelopeClassicGuestScope">You &amp; Your Family</span>
+        <div class="envelope-table-badge" id="envelopeClassicTableBadge" style="display: none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18v3M20 18v3M4 11h16M4 11a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2M4 11v7h16v-7"/></svg>
+          <span id="envelopeClassicTableText">Table 05</span>
+        </div>
+      </div>
       
       <!-- Wax Seal Interactive Button with Beckoning Animation -->
-      <button type="button" class="wax-seal-btn" id="openInviteBtn" aria-label="Please Open Wedding Invitation">
+      <button type="button" class="wax-seal-btn" id="openEnvelopeBtn" aria-label="Please Open Wedding Invitation">
         <!-- Golden Halo Pulse Beacon Waves -->
         <span class="seal-halo-ring" aria-hidden="true"></span>
         <span class="seal-halo-ring delay" aria-hidden="true"></span>
@@ -85,7 +198,7 @@
         </div>
       </button>
 
-      <div class="envelope-prompt">
+      <div class="envelope-prompt" id="envelopeClassicPrompt">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
           <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
@@ -813,6 +926,6 @@
   </div>
 
   <!-- Script -->
-  <script src="js/main.js?v=20261105.23"></script>
+  <script src="js/main.js?v=20261105.24"></script>
 </body>
 </html>

@@ -249,6 +249,406 @@ body.envelope-active .mobile-action-bar {
   z-index: 0;
 }
 
+/* ==========================================================================
+   Sri Lankan Sinhala Royal Wedding Card Intro
+   ========================================================================== */
+.intro-wedding-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: min(430px, calc(100vw - 28px));
+  margin: auto;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-radius: 22px;
+  padding: clamp(22px, 4.5vw, 32px) clamp(16px, 4vw, 24px) clamp(18px, 4vw, 24px);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 70px -15px rgba(20, 19, 17, 0.22), 0 0 35px rgba(186, 149, 90, 0.2);
+  border: 1.5px solid var(--gold-border-bright);
+  background-image: linear-gradient(180deg, rgba(255, 254, 250, 0.98) 0%, rgba(250, 246, 238, 0.98) 100%);
+  animation: introCardFloat 4.8s ease-in-out infinite;
+  z-index: 1;
+}
+
+.intro-wedding-card::before {
+  content: "";
+  position: absolute;
+  top: 8px; left: 8px; right: 8px; bottom: 8px;
+  border: 1px solid rgba(186, 149, 90, 0.45);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+@keyframes introCardFloat {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 25px 70px -15px rgba(20, 19, 17, 0.22), 0 0 35px rgba(186, 149, 90, 0.2);
+  }
+  50% {
+    transform: translateY(-5px);
+    box-shadow: 0 32px 80px -15px rgba(20, 19, 17, 0.28), 0 0 42px rgba(186, 149, 90, 0.28);
+  }
+}
+
+/* Luxury Corner Filigree on Card */
+.intro-wedding-card .card-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.intro-wedding-card .card-corner.top-left { top: 12px; left: 12px; }
+.intro-wedding-card .card-corner.top-right { top: 12px; right: 12px; transform: scaleX(-1); }
+.intro-wedding-card .card-corner.bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
+.intro-wedding-card .card-corner.bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
+
+/* Auspicious Sinhala Traditional Blessing */
+.intro-blessing-wrap {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+.intro-blessing-sinhala {
+  display: block;
+  font-family: 'Noto Serif Sinhala', serif;
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  font-weight: 700;
+  color: var(--gold-deep);
+  letter-spacing: 1px;
+  text-shadow: 0 1px 2px rgba(186, 149, 90, 0.15);
+}
+
+.intro-blessing-sub {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Couple Names */
+.intro-couple-names {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 5.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: clamp(1px, 1.5vw, 2.5px);
+  color: var(--noir-black);
+  margin: 4px 0 2px;
+  text-transform: uppercase;
+  word-break: break-word;
+  line-height: 1.18;
+}
+
+.intro-couple-names .c-amp {
+  font-family: var(--font-script);
+  font-size: 1.45em;
+  color: var(--gold-primary);
+  font-weight: 400;
+  text-transform: none;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.intro-request-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.82rem, 2.5vw, 0.92rem);
+  color: var(--text-body);
+  max-width: 320px;
+  margin: 2px auto 6px;
+  line-height: 1.4;
+}
+
+.intro-wedding-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  letter-spacing: 3.5px;
+  font-weight: 600;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
+}
+
+.intro-wedding-date .date-sep {
+  color: var(--gold-primary);
+  font-size: 0.75rem;
+}
+
+/* Guest Dedication Box */
+.intro-guest-box {
+  margin: 6px auto 8px !important;
+  padding: 8px clamp(10px, 3vw, 16px) !important;
+  max-width: 310px !important;
+}
+
+/* 3D Chibi Miniature Couple */
+.intro-chibi-container {
+  position: relative;
+  margin: 2px auto 8px;
+  width: clamp(155px, 38vw, 185px);
+  height: clamp(155px, 38vw, 185px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-chibi-pair {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: chibiPairFloat 3.8s ease-in-out infinite;
+}
+
+.intro-chibi-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(20, 19, 17, 0.2));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.intro-chibi-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(20, 19, 17, 0.24), transparent);
+  z-index: -1;
+}
+
+@keyframes chibiPairFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Gentle Rising Hearts */
+.intro-floating-heart {
+  position: absolute;
+  color: #D4425A;
+  pointer-events: none;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  animation: heartFloatUp 2.8s ease-out infinite;
+}
+
+.intro-floating-heart.h1 {
+  top: 15%;
+  left: 48%;
+  animation-delay: 0s;
+}
+
+.intro-floating-heart.h2 {
+  top: 25%;
+  left: 55%;
+  font-size: 11px;
+  animation-delay: 1.4s;
+}
+
+.intro-floating-sparkle {
+  position: absolute;
+  top: 10%;
+  right: 18%;
+  color: var(--gold-primary);
+  font-size: 13px;
+  animation: sparkleTwinkle 2.2s ease-in-out infinite;
+}
+
+@keyframes heartFloatUp {
+  0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+  25% { transform: translate(-50%, -10px) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(calc(-50% + 15px), -45px) scale(0.85); opacity: 0; }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.3; }
+  50% { transform: scale(1.2) rotate(45deg); opacity: 0.95; }
+}
+
+/* Ceremonial Brass Oil Lamp (මඟුල් පහන) */
+.intro-lamp-btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  outline: none;
+  margin-top: 2px;
+  transition: transform 0.25s ease;
+}
+
+.intro-lamp-btn:active {
+  transform: scale(0.97);
+}
+
+.lamp-visual-wrap {
+  position: relative;
+  width: 110px;
+  height: 56px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.lamp-radiant-glow {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.45) 0%, rgba(255, 152, 0, 0.18) 45%, transparent 70%);
+  opacity: 0.35;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+
+.lamp-flame-wrap {
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 25px;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+}
+
+.flame-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(ellipse at 50% 75%, #FFFFFF 0%, #FFF59D 25%, #FFA726 65%, #E65100 88%, transparent 100%);
+  animation: flameDance 1.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 6px rgba(255, 167, 38, 0.85));
+}
+
+.flame-inner {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 13px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: #FFFFFF;
+  opacity: 0.92;
+}
+
+@keyframes flameDance {
+  0% { transform: scale(1) rotate(-1.5deg); }
+  50% { transform: scale(1.08) rotate(1deg); }
+  100% { transform: scale(0.96) rotate(-2deg); }
+}
+
+.lamp-brass-svg {
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(20, 19, 17, 0.22));
+  transition: transform 0.3s ease;
+}
+
+.intro-lamp-btn:hover .lamp-brass-svg {
+  transform: scale(1.03);
+}
+
+/* Action Pill */
+.lamp-touch-pill {
+  padding: 8px 20px;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #181715 0%, #282420 100%);
+  color: #FFFDF9;
+  font-size: 0.72rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 6px 18px rgba(20, 19, 17, 0.25);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: lampPillPulse 3s ease-in-out infinite;
+}
+
+@keyframes lampPillPulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(20, 19, 17, 0.2), 0 0 0 1px rgba(186, 149, 90, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(186, 149, 90, 0.35), 0 0 0 2px rgba(212, 175, 55, 0.6);
+  }
+}
+
+.intro-lamp-btn:hover .lamp-touch-pill {
+  background: var(--gradient-gold);
+  color: #141311;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(186, 149, 90, 0.45);
+}
+
+.lamp-pill-star {
+  color: var(--gold-primary);
+  font-size: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+.intro-lamp-btn:hover .lamp-pill-star {
+  color: #141311;
+}
+
+.intro-touch-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.intro-touch-hint svg {
+  color: var(--gold-deep);
+  animation: hintSpin 8s linear infinite;
+}
+
+@keyframes hintSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* State when Lamp is Lit */
+.intro-lamp-btn.lamp-lit .lamp-radiant-glow {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.6);
+}
+
+.intro-lamp-btn.lamp-lit .lamp-flame-wrap {
+  transform: translateX(-50%) scale(1.4);
+}
+
+.intro-lamp-btn.lamp-lit .lamp-touch-pill {
+  background: var(--gradient-gold);
+  color: #141311;
+  box-shadow: 0 0 30px rgba(255, 193, 7, 0.6);
+}
+
 .envelope-card {
   display: flex;
   flex-direction: column;

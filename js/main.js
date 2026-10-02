@@ -422,20 +422,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (openInviteBtn && envelopeOverlay) {
-    openInviteBtn.addEventListener('click', () => {
-      // Trigger unsealing pop animation
-      openInviteBtn.classList.add('unsealing');
+    const lampPillText = document.getElementById('lampPillText');
+    const introTouchHint = document.querySelector('.intro-touch-hint');
 
-      // Smoothly unveil after quick tactile stamp reaction
+    if (introTouchHint) {
+      introTouchHint.addEventListener('click', () => openInviteBtn.click());
+    }
+
+    openInviteBtn.addEventListener('click', () => {
+      // Trigger ceremonial lamp lighting animation
+      openInviteBtn.classList.add('lamp-lit');
+      openInviteBtn.classList.add('unsealing');
+      if (lampPillText) {
+        lampPillText.textContent = '✨ මංගල පහන දැල්විණි ✨';
+      }
+
+      // Smoothly unveil after auspicious lamp flame blooms
       setTimeout(() => {
         envelopeOverlay.classList.add('opened');
         document.body.classList.remove('envelope-active');
         document.body.style.overflow = 'auto';
 
-        // Start romantic ambient wedding music upon unsealing
+        // Start romantic ambient wedding music upon lamp lighting
         playWeddingMusic();
 
-        // Reveal mobile action bar only after envelope is opened
+        // Reveal mobile action bar only after card is opened
         const mobileNav = document.getElementById('mobileActionBar');
         if (mobileNav) mobileNav.style.display = 'flex';
 
@@ -447,6 +458,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1100);
 
         // Trigger reveal on elements in viewport
+        setTimeout(() => {
+          document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+              el.classList.add('active');
+            }
+          });
+        }, 300);
+      }, 650);
+    });
+  }
+
+  // Classic Wax Seal Button (Fully preserved for 1-click easy revert or ?style=envelope)
+  const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
+  const envelopeClassicPrompt = document.getElementById('envelopeClassicPrompt');
+
+  if (envelopeClassicPrompt && openEnvelopeBtn) {
+    envelopeClassicPrompt.addEventListener('click', () => openEnvelopeBtn.click());
+  }
+
+  if (openEnvelopeBtn && envelopeOverlay) {
+    openEnvelopeBtn.addEventListener('click', () => {
+      openEnvelopeBtn.classList.add('unsealing');
+      setTimeout(() => {
+        envelopeOverlay.classList.add('opened');
+        document.body.classList.remove('envelope-active');
+        document.body.style.overflow = 'auto';
+
+        playWeddingMusic();
+
+        const mobileNav = document.getElementById('mobileActionBar');
+        if (mobileNav) mobileNav.style.display = 'flex';
+
+        setTimeout(() => {
+          if (typeof cancelEnvelopePetals === 'function') {
+            cancelEnvelopePetals();
+          }
+        }, 1100);
+
         setTimeout(() => {
           document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
             const rect = el.getBoundingClientRect();
@@ -581,12 +631,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     7. Dynamic Personalized Guest Invitation Engine
+     7. Dynamic Personalized Guest Invitation Engine & Style Mode Switcher
      ========================================================================== */
   const urlParams = new URLSearchParams(window.location.search);
   const rawGuestName = urlParams.get('to') || urlParams.get('name') || urlParams.get('guest');
   const rawScope = urlParams.get('invite') || urlParams.get('with') || '';
   const rawTable = urlParams.get('table') || urlParams.get('seat') || '';
+  const requestedStyle = (urlParams.get('style') || '').toLowerCase().trim();
+
+  // Mode Switcher: defaults to Sri Lankan Royal Card; ?style=envelope activates Classic Wax Seal Envelope
+  const introWeddingCard = document.getElementById('introWeddingCard');
+  const envelopeClassicCard = document.getElementById('envelopeClassicCard');
+  if (requestedStyle === 'envelope' || requestedStyle === 'classic') {
+    if (introWeddingCard) introWeddingCard.style.display = 'none';
+    if (envelopeClassicCard) envelopeClassicCard.style.display = 'flex';
+    if (envelopeOverlay) envelopeOverlay.classList.remove('card-mode-active');
+  } else {
+    if (introWeddingCard) introWeddingCard.style.display = 'flex';
+    if (envelopeClassicCard) envelopeClassicCard.style.display = 'none';
+    if (envelopeOverlay) envelopeOverlay.classList.add('card-mode-active');
+  }
 
   function getScopeLabel(scopeKey) {
     const key = (scopeKey || '').toLowerCase().trim();
@@ -601,10 +665,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const envelopeGuestName = document.getElementById('envelopeGuestName');
   const envelopeGuestScope = document.getElementById('envelopeGuestScope');
+  const envelopeClassicGuestName = document.getElementById('envelopeClassicGuestName');
+  const envelopeClassicGuestScope = document.getElementById('envelopeClassicGuestScope');
   const heroGuestName = document.getElementById('heroGuestName');
   const heroGuestScope = document.getElementById('heroGuestScope');
+
   const envelopeTableBadge = document.getElementById('envelopeTableBadge');
   const envelopeTableText = document.getElementById('envelopeTableText');
+  const envelopeClassicTableBadge = document.getElementById('envelopeClassicTableBadge');
+  const envelopeClassicTableText = document.getElementById('envelopeClassicTableText');
   const heroTableBadge = document.getElementById('heroTableBadge');
   const heroTableText = document.getElementById('heroTableText');
   const venueTableBox = document.getElementById('venueTableBox');
@@ -616,6 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (envelopeGuestName) envelopeGuestName.textContent = cleanName;
     if (envelopeGuestScope) envelopeGuestScope.textContent = scopeText;
+    if (envelopeClassicGuestName) envelopeClassicGuestName.textContent = cleanName;
+    if (envelopeClassicGuestScope) envelopeClassicGuestScope.textContent = scopeText;
     if (heroGuestName) heroGuestName.textContent = cleanName;
     if (heroGuestScope) heroGuestScope.textContent = scopeText;
   }
@@ -625,12 +696,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const cleanTable = rawTable.trim();
     if (envelopeTableText) envelopeTableText.textContent = cleanTable;
     if (envelopeTableBadge) envelopeTableBadge.style.display = 'inline-flex';
+    if (envelopeClassicTableText) envelopeClassicTableText.textContent = cleanTable;
+    if (envelopeClassicTableBadge) envelopeClassicTableBadge.style.display = 'inline-flex';
     if (heroTableText) heroTableText.textContent = cleanTable;
     if (heroTableBadge) heroTableBadge.style.display = 'inline-flex';
     if (venueTableText) venueTableText.textContent = cleanTable;
     if (venueTableBox) venueTableBox.style.display = 'block';
   } else {
     if (envelopeTableBadge) envelopeTableBadge.style.display = 'none';
+    if (envelopeClassicTableBadge) envelopeClassicTableBadge.style.display = 'none';
     if (heroTableBadge) heroTableBadge.style.display = 'none';
     if (venueTableBox) venueTableBox.style.display = 'none';
   }
