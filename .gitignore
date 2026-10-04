@@ -1,4 +1,4 @@
-﻿# OS generated files
+# OS generated files
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -13,3 +13,6 @@ $RECYCLE.BIN/
 
 # Server logs
 *.log
+
+# Local originals / asset backups
+*-original.*
