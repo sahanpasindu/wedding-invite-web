@@ -569,6 +569,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Auto-pause background music when user switches apps, switches tabs, or minimizes
+  let wasMusicPlayingBeforeHidden = false;
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (isMusicPlaying) {
+        wasMusicPlayingBeforeHidden = true;
+        pauseWeddingMusic();
+      }
+    } else {
+      if (wasMusicPlayingBeforeHidden) {
+        wasMusicPlayingBeforeHidden = false;
+        playWeddingMusic();
+      }
+    }
+  });
+
+  // Handle mobile page dismissal or navigation
+  window.addEventListener('pagehide', () => {
+    if (isMusicPlaying) {
+      pauseWeddingMusic();
+    }
+  });
+
   /* ==========================================================================
      6. Add To Calendar (.ics File & Google Calendar)
      ========================================================================== */
