@@ -695,13 +695,35 @@ document.addEventListener('DOMContentLoaded', () => {
   if (rawGuestName) {
     const cleanName = rawGuestName.trim();
     const scopeText = getScopeLabel(rawScope);
+    const isSolo = rawScope && (rawScope.toLowerCase().trim() === 'you' || rawScope.toLowerCase().trim() === 'solo');
 
     if (envelopeGuestName) envelopeGuestName.textContent = cleanName;
-    if (envelopeGuestScope) envelopeGuestScope.textContent = scopeText;
+    if (envelopeGuestScope) {
+      if (isSolo) {
+        envelopeGuestScope.style.display = 'none';
+      } else {
+        envelopeGuestScope.style.display = 'block';
+        envelopeGuestScope.textContent = scopeText;
+      }
+    }
     if (envelopeClassicGuestName) envelopeClassicGuestName.textContent = cleanName;
-    if (envelopeClassicGuestScope) envelopeClassicGuestScope.textContent = scopeText;
+    if (envelopeClassicGuestScope) {
+      if (isSolo) {
+        envelopeClassicGuestScope.style.display = 'none';
+      } else {
+        envelopeClassicGuestScope.style.display = 'block';
+        envelopeClassicGuestScope.textContent = scopeText;
+      }
+    }
     if (heroGuestName) heroGuestName.textContent = cleanName;
-    if (heroGuestScope) heroGuestScope.textContent = scopeText;
+    if (heroGuestScope) {
+      if (isSolo) {
+        heroGuestScope.style.display = 'none';
+      } else {
+        heroGuestScope.style.display = 'block';
+        heroGuestScope.textContent = scopeText;
+      }
+    }
   }
 
   // Optional Table Seating (shown only if table parameter is present)
@@ -752,11 +774,24 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${origin}${cleanPath}/`;
   }
 
-  function generateInvitationMessage(guestName, scopeText, linkUrl, tableText) {
+  function formatScopeForInviteMessage(scopeKey) {
+    const key = (scopeKey || '').toLowerCase().trim();
+    if (key === 'you' || key === 'solo' || key === 'you (solo)') return 'you';
+    if (key === 'family' || key === 'fam') return 'you & your family';
+    if (key === 'husband' || key === 'hus') return 'you & your husband';
+    if (key === 'wife') return 'you & your wife';
+    if (key === 'partner') return 'you & your partner';
+    // Clean any unwanted "(Solo)" if present in custom input
+    const cleaned = (scopeKey || '').replace(/\(Solo\)/gi, '').trim();
+    return cleaned ? cleaned.toLowerCase() : 'you';
+  }
+
+  function generateInvitationMessage(guestName, scopeKey, linkUrl, tableText) {
     const tableLine = tableText ? `\n\n🪑 *Reserved Seating:* ${tableText}` : '';
+    const inviteTarget = formatScopeForInviteMessage(scopeKey);
     return `🌸 💍 *Anu & Nirmal are getting married!* 💍 🌸\n\n` +
            `Dear *${guestName}*,\n\n` +
-           `Because you have shared in our lives and brought us joy, we warmly invite *${scopeText}* to celebrate our wedding day with us.\n\n` +
+           `Because you have shared in our lives and brought us joy, we warmly invite *${inviteTarget}* to celebrate our wedding day with us.\n\n` +
            `📅 *Date:* Thursday, November 5, 2026\n\n` +
            `📍 *Venue:* Hotel Grand Guardian, Ratnapura` +
            tableLine + `\n\n` +
@@ -769,7 +804,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!genLinkInput) return '';
     const name = genGuestNameInput ? genGuestNameInput.value.trim() : '';
     const scope = genInviteScopeSelect ? genInviteScopeSelect.value : 'family';
-    const scopeText = genInviteScopeSelect ? genInviteScopeSelect.options[genInviteScopeSelect.selectedIndex].text : 'You & Your Family';
     const tableVal = genTableNumberInput ? genTableNumberInput.value.trim() : '';
     const baseUrl = getCleanBaseUrl();
 
@@ -788,7 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update WhatsApp link immediately so clicking it works natively
     if (btnShareWhatsAppGuest) {
-      const msg = generateInvitationMessage(name || effectiveName, scopeText, fullUrl, tableVal);
+      const msg = generateInvitationMessage(name || effectiveName, scope, fullUrl, tableVal);
       const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
       btnShareWhatsAppGuest.setAttribute('href', waUrl);
     }
@@ -901,9 +935,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const fullUrl = updateGeneratedLink();
-    const scopeText = genInviteScopeSelect ? genInviteScopeSelect.options[genInviteScopeSelect.selectedIndex].text : 'You & Your Family';
+    const scope = genInviteScopeSelect ? genInviteScopeSelect.value : 'family';
     const tableVal = genTableNumberInput ? genTableNumberInput.value.trim() : '';
-    const fullMsg = generateInvitationMessage(name, scopeText, fullUrl, tableVal);
+    const fullMsg = generateInvitationMessage(name, scope, fullUrl, tableVal);
 
     let copied = false;
 
