@@ -250,7 +250,7 @@ body.envelope-active .mobile-action-bar {
 }
 
 /* ==========================================================================
-   Sri Lankan Sinhala Royal Wedding Card Intro
+   Sri Lankan Traditional Wedding Card Intro
    ========================================================================== */
 .intro-wedding-card {
   display: flex;
@@ -295,7 +295,7 @@ body.envelope-active .mobile-action-bar {
 .intro-wedding-card .card-corner.bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
 .intro-wedding-card .card-corner.bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
 
-/* Royal Wedding Invitation Header */
+/* Wedding Invitation Header */
 .intro-blessing-wrap {
   margin-top: 2px;
   margin-bottom: 4px;

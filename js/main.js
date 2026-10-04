@@ -652,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rawTable = urlParams.get('table') || urlParams.get('seat') || '';
   const requestedStyle = (urlParams.get('style') || '').toLowerCase().trim();
 
-  // Mode Switcher: defaults to Sri Lankan Royal Card; ?style=envelope activates Classic Wax Seal Envelope
+  // Mode Switcher: defaults to Sri Lankan Traditional Card; ?style=envelope activates Classic Wax Seal Envelope
   const introWeddingCard = document.getElementById('introWeddingCard');
   const envelopeClassicCard = document.getElementById('envelopeClassicCard');
   if (requestedStyle === 'envelope' || requestedStyle === 'classic') {
