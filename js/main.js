@@ -1205,7 +1205,71 @@ document.addEventListener('DOMContentLoaded', () => {
     return sessionStorage.getItem('anu_nirmal_portal_unlocked') === 'true';
   }
 
+  // Helper to check if Supabase is configured
+  function isSupabaseConfigured() {
+    return typeof SUPABASE_CONFIG !== 'undefined' &&
+           SUPABASE_CONFIG.url &&
+           SUPABASE_CONFIG.anonKey &&
+           !SUPABASE_CONFIG.url.includes('YOUR_PROJECT_ID') &&
+           SUPABASE_CONFIG.url.startsWith('https://');
+  }
+
+  function formatWishTime(dateStr) {
+    if (!dateStr) return 'Just now';
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return String(dateStr);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return `${diffHours}h ago`;
+      const diffDays = Math.floor(diffHours / 24);
+      if (diffDays < 7) return `${diffDays}d ago`;
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch (e) {
+      return 'Guest blessing';
+    }
+  }
+
   async function loadWishes() {
+    // 1. Try Supabase cloud database if configured
+    if (isSupabaseConfigured()) {
+      try {
+        const table = SUPABASE_CONFIG.tableName || 'wishes';
+        const endpoint = `${SUPABASE_CONFIG.url.replace(/\/+$/, '')}/rest/v1/${table}?select=*&order=created_at.desc`;
+        const res = await fetch(endpoint, {
+          headers: {
+            'apikey': SUPABASE_CONFIG.anonKey,
+            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
+          }
+        });
+        if (res.ok) {
+          const rows = await res.json();
+          if (Array.isArray(rows)) {
+            currentWishes = rows.map(r => ({
+              id: String(r.id),
+              author: r.author || 'Guest',
+              text: r.text || '',
+              time: formatWishTime(r.created_at),
+              timestamp: r.created_at ? new Date(r.created_at).getTime() : Date.now()
+            }));
+            localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
+            renderWishes();
+            renderPortalWishes();
+            return;
+          }
+        } else {
+          console.warn('Supabase fetch returned error:', res.status, res.statusText);
+        }
+      } catch (err) {
+        console.warn('Supabase offline or network error, falling back:', err);
+      }
+    }
+
+    // 2. Try api/wishes.php if running on PHP server (e.g. XAMPP)
     try {
       const res = await fetch('api/wishes.php', { cache: 'no-store' });
       if (res.ok) {
@@ -1219,14 +1283,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (err) {
-      console.warn('api/wishes.php offline, falling back to local store:', err);
+      // Expected on static hosts like Vercel / GitHub Pages
     }
 
+    // 3. Fallback to localStorage
     try {
       const stored = JSON.parse(localStorage.getItem('anu_nirmal_wishes') || '[]');
-      // Filter out any legacy dummy wish IDs from previous tests
       currentWishes = Array.isArray(stored) ? stored.filter(w => w && !['wish_1', 'wish_2', 'wish_3'].includes(w.id)) : [];
-      localStorage.setItem('anu_nirmal_wishes', JSON.stringify(currentWishes));
     } catch (e) {
       currentWishes = [];
     }
@@ -1362,21 +1425,52 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'wish_' + Date.now(),
       author: author,
       text: text,
-      time: 'Just now'
+      time: 'Just now',
+      timestamp: Date.now()
     };
 
-    try {
-      const res = await fetch('api/wishes.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'add', author, text })
-      });
-      const data = await res.json();
-      if (data && data.status === 'success' && data.wish) {
-        newWish = data.wish;
+    // 1. Try Supabase cloud database
+    if (isSupabaseConfigured()) {
+      try {
+        const table = SUPABASE_CONFIG.tableName || 'wishes';
+        const endpoint = `${SUPABASE_CONFIG.url.replace(/\/+$/, '')}/rest/v1/${table}`;
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_CONFIG.anonKey,
+            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({ author, text })
+        });
+        if (res.ok) {
+          const inserted = await res.json();
+          if (Array.isArray(inserted) && inserted[0]) {
+            newWish.id = String(inserted[0].id);
+            newWish.time = formatWishTime(inserted[0].created_at);
+          }
+        } else {
+          console.warn('Supabase insert failed with status:', res.status);
+        }
+      } catch (err) {
+        console.warn('Supabase insert error, falling back locally:', err);
       }
-    } catch (err) {
-      console.warn('API offline, saving wish locally');
+    } else {
+      // 2. Try PHP backend if running on local server
+      try {
+        const res = await fetch('api/wishes.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'add', author, text })
+        });
+        const data = await res.json();
+        if (data && data.status === 'success' && data.wish) {
+          newWish = data.wish;
+        }
+      } catch (err) {
+        // Fallback to local store
+      }
     }
 
     currentWishes.unshift(newWish);
@@ -1398,14 +1492,32 @@ document.addEventListener('DOMContentLoaded', () => {
     renderWishes();
     renderPortalWishes();
 
-    try {
-      await fetch('api/wishes.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update', id, author: newAuthor, text: newText })
-      });
-    } catch (err) {
-      console.warn('API offline, wish updated in local store');
+    if (isSupabaseConfigured()) {
+      try {
+        const table = SUPABASE_CONFIG.tableName || 'wishes';
+        const endpoint = `${SUPABASE_CONFIG.url.replace(/\/+$/, '')}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`;
+        await fetch(endpoint, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_CONFIG.anonKey,
+            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ author: newAuthor, text: newText })
+        });
+      } catch (err) {
+        console.warn('Supabase update failed:', err);
+      }
+    } else {
+      try {
+        await fetch('api/wishes.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update', id, author: newAuthor, text: newText })
+        });
+      } catch (err) {
+        console.warn('API offline, wish updated in local store');
+      }
     }
   }
 
@@ -1415,14 +1527,30 @@ document.addEventListener('DOMContentLoaded', () => {
     renderWishes();
     renderPortalWishes();
 
-    try {
-      await fetch('api/wishes.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', id })
-      });
-    } catch (err) {
-      console.warn('API offline, wish removed from local store');
+    if (isSupabaseConfigured()) {
+      try {
+        const table = SUPABASE_CONFIG.tableName || 'wishes';
+        const endpoint = `${SUPABASE_CONFIG.url.replace(/\/+$/, '')}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`;
+        await fetch(endpoint, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_CONFIG.anonKey,
+            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
+          }
+        });
+      } catch (err) {
+        console.warn('Supabase delete failed:', err);
+      }
+    } else {
+      try {
+        await fetch('api/wishes.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', id })
+        });
+      } catch (err) {
+        console.warn('API offline, wish removed from local store');
+      }
     }
   }
 
