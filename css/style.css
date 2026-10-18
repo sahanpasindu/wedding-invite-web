@@ -2574,9 +2574,12 @@ body.envelope-active .mobile-action-bar {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 480px;
+  max-height: 650px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 6px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-border-bright) transparent;
 }
 
 .portal-wish-item {
@@ -2980,10 +2983,35 @@ body.envelope-active .mobile-action-bar {
   margin-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-height: 360px;
+  gap: 12px;
+  max-height: 650px;
   overflow-y: auto;
   padding-right: 6px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-border-bright) transparent;
+}
+
+.wishes-list::-webkit-scrollbar,
+.portal-wishes-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.wishes-list::-webkit-scrollbar-track,
+.portal-wishes-list::-webkit-scrollbar-track {
+  background: rgba(186, 149, 90, 0.05);
+  border-radius: 4px;
+}
+
+.wishes-list::-webkit-scrollbar-thumb,
+.portal-wishes-list::-webkit-scrollbar-thumb {
+  background: var(--gold-border-bright);
+  border-radius: 4px;
+}
+
+.wishes-list::-webkit-scrollbar-thumb:hover,
+.portal-wishes-list::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-deep);
 }
 
 .wish-item {
